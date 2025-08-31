@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vocabulary Finder - Englisch K10 - SVR</title>
+  <title>Vocabulary Finder</title>
   <style>
     :root{
       --bg:#0f172a;        /* slate-900 */
@@ -16,27 +16,28 @@
     }
     html,body{height:100%}
     body{margin:0;background:linear-gradient(180deg,var(--bg),#0b1226 40%,#070d1a);color:var(--text);font:16px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"}
-    .wrap{max-width:1100px;margin:0 auto;padding:28px}
+    .wrap{max-width:1100px;margin:0 auto;padding:14px}
 
     header{position:sticky;top:0;background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(15,23,42,.85));backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid var(--border);z-index:10}
     header .bar{display:flex;gap:14px;align-items:end;flex-wrap:wrap;padding:14px 0}
-    h1{font-size:22px;margin:0;letter-spacing:.2px}
-    .sub{color:var(--muted);font-size:13px;margin-top:4px}
+    h1{font-size:20px;margin:0;letter-spacing:.2px}
+    .sub{color:var(--muted);font-size:12px;margin-top:4px;line-height:1.4}
 
     .search{display:flex;gap:10px;align-items:center;width:100%}
     .input{position:relative;flex:1}
-    .input input{width:100%;padding:12px 40px 12px 44px;border-radius:12px;border:1px solid var(--border);background:#0b1224;color:var(--text);outline:none;box-shadow:0 0 0 1px rgba(34,211,238,.0) inset;transition:box-shadow .2s}
+    .input input{width:100%;padding:12px 40px 12px 44px;border-radius:12px;border:1px solid var(--border);background:#0b1224;color:var(--text);outline:none;box-shadow:0 0 0 1px rgba(34,211,238,.0) inset;transition:box-shadow .2s;font-size:16px}
     .input input:focus{box-shadow:0 0 0 2px rgba(34,211,238,.35) inset}
     .input .icon{position:absolute;left:12px;top:50%;translate:0 -50%;opacity:.8}
     .input .clear{position:absolute;right:8px;top:50%;translate:0 -50%;background:transparent;border:0;color:var(--muted);cursor:pointer;font-size:16px;padding:6px}
 
     .toggle{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
-    .toggle select{background:#0b1224;border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:10px}
+    .toggle select{background:#0b1224;border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:10px;font-size:14px}
 
     .suggest{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
-    .pill{border:1px solid var(--border);border-radius:999px;padding:6px 10px;background:#0b1224;color:#cbd5e1;cursor:pointer;font-size:13px}
+    .pill{border:1px solid var(--border);border-radius:999px;padding:6px 10px;background:#0b1224;color:#cbd5e1;cursor:pointer;font-size:13px;white-space:nowrap}
     .pill:hover{border-color:#263246}
 
+    /* Desktop table styles */
     .grid{margin-top:14px;border:1px solid var(--border);border-radius:14px;overflow:auto;background:#0a1326}
     table{border-collapse:separate;border-spacing:0;width:100%;table-layout:fixed}
     thead th{background:#0d1832;z-index:5}
@@ -46,21 +47,65 @@
     tr:nth-child(even) td{background:rgba(255,255,255,.01)}
     .topic{color:#93c5fd}
     .word{font-weight:700}
+
+    /* Mobile card styles */
+    .cards{display:none;margin-top:14px;gap:12px;flex-direction:column}
+    .card{background:#0a1326;border:1px solid var(--border);border-radius:12px;padding:16px}
+    .card-topic{color:#93c5fd;font-size:12px;font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+    .card-word{font-size:18px;font-weight:700;margin-bottom:8px;line-height:1.3}
+    .card-meaning{margin-bottom:12px;line-height:1.5;color:#d1d5db}
+    .card-collocations{font-size:14px;color:var(--muted);line-height:1.4}
+    .card-collocations strong{color:var(--text);font-weight:600}
+
     mark{background:linear-gradient(90deg,var(--accent-2),#a7f3d0);color:#111827;border-radius:4px;padding:0 2px;white-space:pre-wrap}
 
     details{margin-top:18px}
-    summary{cursor:pointer;color:#c7d2fe}
+    summary{cursor:pointer;color:#c7d2fe;font-size:15px;padding:8px 0}
 
     .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
-    .row input,.row textarea{background:#0b1224;border:1px solid var(--border);color:var(--text);padding:10px;border-radius:10px}
-    .row input[type="text"]{min-width:220px}
+    .row input,.row textarea{background:#0b1224;border:1px solid var(--border);color:var(--text);padding:10px;border-radius:10px;font-size:14px}
+    .row input[type="text"]{min-width:180px;flex:1}
     .row textarea{width:100%;min-height:80px}
-    .row button{background:linear-gradient(90deg,#06b6d4,#22d3ee);border:0;color:#05202a;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+    .row button{background:linear-gradient(90deg,#06b6d4,#22d3ee);border:0;color:#05202a;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px;white-space:nowrap}
     .row button:active{scale:.99}
 
     footer{color:var(--muted);font-size:12px;margin:18px 0 40px}
     a{color:#7dd3fc}
     .count{color:#a7f3d0;font-weight:700}
+
+    /* Mobile responsive styles */
+    @media (max-width: 768px) {
+      .wrap{padding:12px}
+      h1{font-size:18px}
+      .sub{font-size:11px}
+      header .bar{gap:10px;padding:10px 0}
+      
+      .toggle{order:1;margin-left:auto;margin-top:-4px}
+      .search{order:2;width:100%}
+      
+      .input input{padding:14px 40px 14px 44px;font-size:16px}
+      
+      .suggest{margin:8px 0 2px;gap:6px}
+      .pill{padding:8px 12px;font-size:12px}
+      
+      /* Hide table, show cards on mobile */
+      .grid{display:none}
+      .cards{display:flex}
+      
+      .row{flex-direction:column;gap:8px}
+      .row input[type="text"]{min-width:auto;width:100%}
+      .row button{padding:12px 16px}
+      
+      details summary{font-size:14px}
+    }
+
+    @media (max-width: 480px) {
+      .wrap{padding:8px}
+      h1{font-size:16px}
+      .input input{padding:12px 36px 12px 40px}
+      .card{padding:12px}
+      .card-word{font-size:16px}
+    }
   </style>
 </head>
 <body>
@@ -68,10 +113,10 @@
     <div class="wrap">
       <div class="bar">
         <div>
-          <h1>Vocabulary Finder - Englisch K10 - SVR</h1>
-          <div class="sub">Search a <b>word/expression</b> to see its <b>meaning</b> and <b>collocations</b>.</div>
+          <h1>Vocabulary Finder</h1>
+          <div class="sub">Search a <b>word/expression</b> to see its <b>meaning</b> and <b>collocations</b>. (한 글자만 써도 추천이 뜸)</div>
         </div>
-        <div class="toggle" style="margin-left:auto">
+        <div class="toggle">
           <label>Match:</label>
           <select id="mode">
             <option value="contains">Contains</option>
@@ -91,6 +136,7 @@
   </header>
 
   <main class="wrap">
+    <!-- Desktop table view -->
     <div class="grid">
       <table id="tbl">
         <thead>
@@ -105,20 +151,23 @@
       </table>
     </div>
 
+    <!-- Mobile card view -->
+    <div class="cards" id="cards"></div>
+
     <details>
-      <summary>Add / Import</summary>
+      <summary>➕ Add / Import</summary>
       <div class="row">
         <input type="text" id="topic" placeholder="Topic (optional)" />
         <input type="text" id="word" placeholder="Word / Expression" />
-        <input type="text" id="meaning" placeholder="Meaning" style="flex:1;min-width:360px" />
+        <input type="text" id="meaning" placeholder="Meaning" />
       </div>
       <div class="row">
-        <input type="text" id="collocations" placeholder="Collocations (comma-separated)" style="flex:1;min-width:360px" />
+        <input type="text" id="collocations" placeholder="Collocations (comma-separated)" />
         <button id="addBtn">Add item</button>
         <button id="exportBtn" title="Download JSON">Export JSON</button>
         <label style="display:inline-flex;gap:8px;align-items:center;cursor:pointer">
           <input type="file" id="file" accept=".json,.csv,.tsv,.txt" style="display:none" />
-          <span class="pill">Import JSON/CSV/TSV</span>
+          <span class="pill">📥 Import JSON/CSV/TSV</span>
         </label>
       </div>
       <p class="sub">Tip: CSV/TSV columns in this order → <code>topic, word, meaning, collocations</code> (collocations separated by <code>;</code> or <code>,</code>).</p>
@@ -151,18 +200,18 @@ let DATA = [
   {topic:"NOTW · peace", word:"reaffirmation", meaning:"a reassertion or confirmation of a fact or belief", collocations:["reaffirmation of commitment","public reaffirmation"]},
   {topic:"NOTW · peace", word:"to pledge", meaning:"to formally promise or agree to give or do something", collocations:["pledge support","pledge aid","pledge to do sth"]},
   {topic:"NOTW · technology", word:"stake", meaning:"an interest or degree of involvement in something", collocations:["hold a stake","stake in a company","at stake"]},
-  {topic:"NOTW · 2025‑08‑28", word:"summit", meaning:"Gipfeltreffen; 정상 회담", collocations:["hold a summit","international summit","peace summit"]},
-  {topic:"NOTW · 2025‑08‑28", word:"diplomacy", meaning:"Diplomatie; 외교", collocations:["practice diplomacy","shuttle diplomacy","diplomacy skills"]},
-  {topic:"NOTW · 2025‑08‑28", word:"alliance", meaning:"Allianz; 동맹, 협력 관계", collocations:["form an alliance","military alliance","strategic alliance"]},
-  {topic:"NOTW · 2025‑08‑28", word:"inequality", meaning:"Ungleichheit; 불평등", collocations:["reduce inequality","social inequality","income inequality"]},
-  {topic:"NOTW · 2025‑08‑28", word:"literacy", meaning:"Alphabetisierung; 능력", collocations:["literacy rate","digital literacy","promote literacy"]},
+  {topic:"NOTW · 2025–08–28", word:"summit", meaning:"Gipfeltreffen; 정상 회담", collocations:["hold a summit","international summit","peace summit"]},
+  {topic:"NOTW · 2025–08–28", word:"diplomacy", meaning:"Diplomatie; 외교", collocations:["practice diplomacy","shuttle diplomacy","diplomacy skills"]},
+  {topic:"NOTW · 2025–08–28", word:"alliance", meaning:"Allianz; 동맹, 협력 관계", collocations:["form an alliance","military alliance","strategic alliance"]},
+  {topic:"NOTW · 2025–08–28", word:"inequality", meaning:"Ungleichheit; 불평등", collocations:["reduce inequality","social inequality","income inequality"]},
+  {topic:"NOTW · 2025–08–28", word:"literacy", meaning:"Alphabetisierung; 능력", collocations:["literacy rate","digital literacy","promote literacy"]},
   {topic:"NOTW · world of work", word:"productivity", meaning:"how much work is completed in a certain time", collocations:["increase productivity","boost productivity","productivity gains"]},
-  {topic:"NOTW · world of work", word:"well‑being", meaning:"a person’s health and happiness", collocations:["physical well‑being","mental well‑being","employee well‑being"]},
+  {topic:"NOTW · world of work", word:"well–being", meaning:"a person's health and happiness", collocations:["physical well–being","mental well–being","employee well–being"]},
   {topic:"NOTW · world of work", word:"pilot program", meaning:"a test period to see if something works", collocations:["run a pilot program","pilot rollout","pilot study"]},
-  {topic:"NOTW · world of work", word:"work‑life balance", meaning:"the balance between time for work and personal life", collocations:["maintain work‑life balance","improve work‑life balance"]},
+  {topic:"NOTW · world of work", word:"work–life balance", meaning:"the balance between time for work and personal life", collocations:["maintain work–life balance","improve work–life balance"]},
   {topic:"NOTW · world of work", word:"burnout", meaning:"extreme tiredness and stress caused by too much work", collocations:["experience burnout","suffer from burnout","burnout prevention"]},
-  {topic:"NOTW · peace", word:"buffer zone", meaning:"a neutral area serving to separate hostile forces or nations", collocations:["a __‑km‑wide buffer zone","demilitarized buffer zone"]},
-  {topic:"NOTW · peace", word:"full‑scale", meaning:"as complete and thorough as possible", collocations:["full‑scale attack","full‑scale search","full‑scale investigation"]},
+  {topic:"NOTW · peace", word:"buffer zone", meaning:"a neutral area serving to separate hostile forces or nations", collocations:["a __–km–wide buffer zone","demilitarized buffer zone"]},
+  {topic:"NOTW · peace", word:"full–scale", meaning:"as complete and thorough as possible", collocations:["full–scale attack","full–scale search","full–scale investigation"]},
   {topic:"NOTW · peace", word:"aerial", meaning:"from a plane / in the air", collocations:["aerial attacks","aerial photography","aerial view"]},
   {topic:"NOTW · politics", word:"to stipulate", meaning:"to state clearly and definitely that something must be done", collocations:["stipulate sth","stipulate that…","stipulated terms"]},
   {topic:"NOTW · politics", word:"confiscation", meaning:"the act of officially taking something away, esp. as a punishment", collocations:["confiscation of goods","asset confiscation"]},
@@ -170,7 +219,7 @@ let DATA = [
   {topic:"NOTW · world of work", word:"protest", meaning:"an action to show disagreement or demand change", collocations:["organize a protest","peaceful protest"]},
   {topic:"NOTW · world of work", word:"contract", meaning:"a legal agreement between two sides", collocations:["sign a contract","break a contract","contract terms"]},
   {topic:"NOTW · transfer", word:"transfer fee", meaning:"money paid by one club to another for a player", collocations:["record transfer fee","pay a transfer fee"]},
-  {topic:"NOTW · transfer", word:"record‑breaking", meaning:"better, higher, or bigger than ever before", collocations:["record‑breaking transfer","record‑breaking season"]},
+  {topic:"NOTW · transfer", word:"record–breaking", meaning:"better, higher, or bigger than ever before", collocations:["record–breaking transfer","record–breaking season"]},
 ];
 
 // Load from localStorage if present
@@ -181,6 +230,7 @@ try{
 
 // -------- DOM & state -------------------------------------------------------
 const tbody = $('#tbl tbody');
+const cards = $('#cards');
 const q = $('#q');
 const modeSel = $('#mode');
 const suggest = $('#suggest');
@@ -188,7 +238,7 @@ const countEl = $('#count');
 
 function save(){ try{ localStorage.setItem('vocab-data', JSON.stringify(DATA)); }catch{} }
 
-function render(rows){
+function renderTable(rows){
   tbody.innerHTML = rows.map(r => {
     const coll = (r.collocations||[]).join(', ');
     const query = q.value.trim();
@@ -199,6 +249,24 @@ function render(rows){
       <td>${highlight(coll, query)}</td>
     </tr>`;
   }).join('');
+}
+
+function renderCards(rows){
+  const query = q.value.trim();
+  cards.innerHTML = rows.map(r => {
+    const coll = (r.collocations||[]).map(c => `<span>${highlight(c, query)}</span>`).join(', ');
+    return `<div class="card">
+      ${r.topic ? `<div class="card-topic">${highlight(r.topic, query)}</div>` : ''}
+      <div class="card-word">${highlight(r.word||'', query)}</div>
+      <div class="card-meaning">${highlight(r.meaning||'', query)}</div>
+      ${coll ? `<div class="card-collocations"><strong>Collocations:</strong> ${coll}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function render(rows){
+  renderTable(rows);
+  renderCards(rows);
   countEl.textContent = rows.length;
 }
 
