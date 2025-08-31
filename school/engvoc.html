@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vocabulary Finder - Englisch K10 - SVR</title>
+  <style>
+    :root{
+      --bg:#0f172a;        /* slate-900 */
+      --panel:#111827;     /* gray-900 */
+      --muted:#6b7280;     /* gray-500 */
+      --text:#e5e7eb;      /* gray-200 */
+      --accent:#22d3ee;    /* cyan-400 */
+      --accent-2:#fde68a;  /* amber-200 */
+      --border:#1f2937;    /* gray-800 */
+    }
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#0b1226 40%,#070d1a);color:var(--text);font:16px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"}
+    .wrap{max-width:1100px;margin:0 auto;padding:28px}
+
+    header{position:sticky;top:0;background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(15,23,42,.85));backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid var(--border);z-index:10}
+    header .bar{display:flex;gap:14px;align-items:end;flex-wrap:wrap;padding:14px 0}
+    h1{font-size:22px;margin:0;letter-spacing:.2px}
+    .sub{color:var(--muted);font-size:13px;margin-top:4px}
+
+    .search{display:flex;gap:10px;align-items:center;width:100%}
+    .input{position:relative;flex:1}
+    .input input{width:100%;padding:12px 40px 12px 44px;border-radius:12px;border:1px solid var(--border);background:#0b1224;color:var(--text);outline:none;box-shadow:0 0 0 1px rgba(34,211,238,.0) inset;transition:box-shadow .2s}
+    .input input:focus{box-shadow:0 0 0 2px rgba(34,211,238,.35) inset}
+    .input .icon{position:absolute;left:12px;top:50%;translate:0 -50%;opacity:.8}
+    .input .clear{position:absolute;right:8px;top:50%;translate:0 -50%;background:transparent;border:0;color:var(--muted);cursor:pointer;font-size:16px;padding:6px}
+
+    .toggle{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+    .toggle select{background:#0b1224;border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:10px}
+
+    .suggest{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
+    .pill{border:1px solid var(--border);border-radius:999px;padding:6px 10px;background:#0b1224;color:#cbd5e1;cursor:pointer;font-size:13px}
+    .pill:hover{border-color:#263246}
+
+    .grid{margin-top:14px;border:1px solid var(--border);border-radius:14px;overflow:auto;background:#0a1326}
+    table{border-collapse:separate;border-spacing:0;width:100%;table-layout:fixed}
+    thead th{background:#0d1832;z-index:5}
+    th,td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:top;white-space:normal;word-break:break-word;overflow-wrap:break-word;hyphens:auto}
+    th{color:#9ca3af;text-align:left;font-weight:600;font-size:13px;letter-spacing:.2px}
+    td{font-size:15px}
+    tr:nth-child(even) td{background:rgba(255,255,255,.01)}
+    .topic{color:#93c5fd}
+    .word{font-weight:700}
+    mark{background:linear-gradient(90deg,var(--accent-2),#a7f3d0);color:#111827;border-radius:4px;padding:0 2px;white-space:pre-wrap}
+
+    details{margin-top:18px}
+    summary{cursor:pointer;color:#c7d2fe}
+
+    .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+    .row input,.row textarea{background:#0b1224;border:1px solid var(--border);color:var(--text);padding:10px;border-radius:10px}
+    .row input[type="text"]{min-width:220px}
+    .row textarea{width:100%;min-height:80px}
+    .row button{background:linear-gradient(90deg,#06b6d4,#22d3ee);border:0;color:#05202a;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+    .row button:active{scale:.99}
+
+    footer{color:var(--muted);font-size:12px;margin:18px 0 40px}
+    a{color:#7dd3fc}
+    .count{color:#a7f3d0;font-weight:700}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="bar">
+        <div>
+          <h1>Vocabulary Finder - Englisch K10 - SVR</h1>
+          <div class="sub">Search a <b>word/expression</b> to see its <b>meaning</b> and <b>collocations</b>.</div>
+        </div>
+        <div class="toggle" style="margin-left:auto">
+          <label>Match:</label>
+          <select id="mode">
+            <option value="contains">Contains</option>
+            <option value="starts">Starts with</option>
+          </select>
+        </div>
+      </div>
+      <div class="search">
+        <div class="input">
+          <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input id="q" placeholder="Search word, meaning, or collocations…" autocomplete="off" />
+          <button class="clear" title="Clear" id="clear">✕</button>
+        </div>
+      </div>
+      <div id="suggest" class="suggest"></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th style="width:18%">Topic</th>
+            <th style="width:22%">Word / Expression</th>
+            <th>Meaning</th>
+            <th style="width:28%">Collocations</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <details>
+      <summary>Add / Import</summary>
+      <div class="row">
+        <input type="text" id="topic" placeholder="Topic (optional)" />
+        <input type="text" id="word" placeholder="Word / Expression" />
+        <input type="text" id="meaning" placeholder="Meaning" style="flex:1;min-width:360px" />
+      </div>
+      <div class="row">
+        <input type="text" id="collocations" placeholder="Collocations (comma-separated)" style="flex:1;min-width:360px" />
+        <button id="addBtn">Add item</button>
+        <button id="exportBtn" title="Download JSON">Export JSON</button>
+        <label style="display:inline-flex;gap:8px;align-items:center;cursor:pointer">
+          <input type="file" id="file" accept=".json,.csv,.tsv,.txt" style="display:none" />
+          <span class="pill">Import JSON/CSV/TSV</span>
+        </label>
+      </div>
+      <p class="sub">Tip: CSV/TSV columns in this order → <code>topic, word, meaning, collocations</code> (collocations separated by <code>;</code> or <code>,</code>).</p>
+    </details>
+
+    <footer>
+      <div>Items: <span id="count" class="count">0</span>. Data is saved to your browser (LocalStorage).</div>
+    </footer>
+  </main>
+
+<script>
+// -------- Utilities ---------------------------------------------------------
+const $ = (sel,root=document)=>root.querySelector(sel);
+const $$ = (sel,root=document)=>Array.from(root.querySelectorAll(sel));
+const norm = s => (s||"").toLowerCase().normalize("NFKD").replace(/\p{Diacritic}/gu,"");
+function highlight(text, q){
+  if(!q) return text;
+  const t = String(text);
+  const nt = norm(t), nq = norm(q);
+  const i = nt.indexOf(nq);
+  if(i<0) return t;
+  return t.slice(0,i) + '<mark>' + t.slice(i,i+q.length) + '</mark>' + t.slice(i+q.length);
+}
+function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); } }
+
+// -------- Seed data (from your vocab list) ---------------------------------
+let DATA = [
+  {topic:"NOTW · world of work", word:"to veto", meaning:"to reject (a proposed law) officially; to refuse to allow (a bill) to become a law", collocations:["veto a bill","presidential veto","override a veto"]},
+  {topic:"NOTW · peace", word:"bilateral", meaning:"involving two groups or countries", collocations:["bilateral talks","bilateral agreement","bilateral relations"]},
+  {topic:"NOTW · peace", word:"reaffirmation", meaning:"a reassertion or confirmation of a fact or belief", collocations:["reaffirmation of commitment","public reaffirmation"]},
+  {topic:"NOTW · peace", word:"to pledge", meaning:"to formally promise or agree to give or do something", collocations:["pledge support","pledge aid","pledge to do sth"]},
+  {topic:"NOTW · technology", word:"stake", meaning:"an interest or degree of involvement in something", collocations:["hold a stake","stake in a company","at stake"]},
+  {topic:"NOTW · 2025‑08‑28", word:"summit", meaning:"Gipfeltreffen; 정상 회담", collocations:["hold a summit","international summit","peace summit"]},
+  {topic:"NOTW · 2025‑08‑28", word:"diplomacy", meaning:"Diplomatie; 외교", collocations:["practice diplomacy","shuttle diplomacy","diplomacy skills"]},
+  {topic:"NOTW · 2025‑08‑28", word:"alliance", meaning:"Allianz; 동맹, 협력 관계", collocations:["form an alliance","military alliance","strategic alliance"]},
+  {topic:"NOTW · 2025‑08‑28", word:"inequality", meaning:"Ungleichheit; 불평등", collocations:["reduce inequality","social inequality","income inequality"]},
+  {topic:"NOTW · 2025‑08‑28", word:"literacy", meaning:"Alphabetisierung; 능력", collocations:["literacy rate","digital literacy","promote literacy"]},
+  {topic:"NOTW · world of work", word:"productivity", meaning:"how much work is completed in a certain time", collocations:["increase productivity","boost productivity","productivity gains"]},
+  {topic:"NOTW · world of work", word:"well‑being", meaning:"a person’s health and happiness", collocations:["physical well‑being","mental well‑being","employee well‑being"]},
+  {topic:"NOTW · world of work", word:"pilot program", meaning:"a test period to see if something works", collocations:["run a pilot program","pilot rollout","pilot study"]},
+  {topic:"NOTW · world of work", word:"work‑life balance", meaning:"the balance between time for work and personal life", collocations:["maintain work‑life balance","improve work‑life balance"]},
+  {topic:"NOTW · world of work", word:"burnout", meaning:"extreme tiredness and stress caused by too much work", collocations:["experience burnout","suffer from burnout","burnout prevention"]},
+  {topic:"NOTW · peace", word:"buffer zone", meaning:"a neutral area serving to separate hostile forces or nations", collocations:["a __‑km‑wide buffer zone","demilitarized buffer zone"]},
+  {topic:"NOTW · peace", word:"full‑scale", meaning:"as complete and thorough as possible", collocations:["full‑scale attack","full‑scale search","full‑scale investigation"]},
+  {topic:"NOTW · peace", word:"aerial", meaning:"from a plane / in the air", collocations:["aerial attacks","aerial photography","aerial view"]},
+  {topic:"NOTW · politics", word:"to stipulate", meaning:"to state clearly and definitely that something must be done", collocations:["stipulate sth","stipulate that…","stipulated terms"]},
+  {topic:"NOTW · politics", word:"confiscation", meaning:"the act of officially taking something away, esp. as a punishment", collocations:["confiscation of goods","asset confiscation"]},
+  {topic:"NOTW · peace", word:"activist", meaning:"a person who takes action for a cause", collocations:["peace activist","human rights activist"]},
+  {topic:"NOTW · world of work", word:"protest", meaning:"an action to show disagreement or demand change", collocations:["organize a protest","peaceful protest"]},
+  {topic:"NOTW · world of work", word:"contract", meaning:"a legal agreement between two sides", collocations:["sign a contract","break a contract","contract terms"]},
+  {topic:"NOTW · transfer", word:"transfer fee", meaning:"money paid by one club to another for a player", collocations:["record transfer fee","pay a transfer fee"]},
+  {topic:"NOTW · transfer", word:"record‑breaking", meaning:"better, higher, or bigger than ever before", collocations:["record‑breaking transfer","record‑breaking season"]},
+];
+
+// Load from localStorage if present
+try{
+  const saved = localStorage.getItem('vocab-data');
+  if(saved) DATA = JSON.parse(saved);
+}catch{}
+
+// -------- DOM & state -------------------------------------------------------
+const tbody = $('#tbl tbody');
+const q = $('#q');
+const modeSel = $('#mode');
+const suggest = $('#suggest');
+const countEl = $('#count');
+
+function save(){ try{ localStorage.setItem('vocab-data', JSON.stringify(DATA)); }catch{} }
+
+function render(rows){
+  tbody.innerHTML = rows.map(r => {
+    const coll = (r.collocations||[]).join(', ');
+    const query = q.value.trim();
+    return `<tr>
+      <td class="topic">${highlight(r.topic||'', query)}</td>
+      <td class="word">${highlight(r.word||'', query)}</td>
+      <td>${highlight(r.meaning||'', query)}</td>
+      <td>${highlight(coll, query)}</td>
+    </tr>`;
+  }).join('');
+  countEl.textContent = rows.length;
+}
+
+function filter(){
+  const query = q.value.trim();
+  if(!query){ render(DATA); makeSuggestions(''); return; }
+  const nq = norm(query);
+  const mode = modeSel.value;
+  const rows = DATA.filter(r => {
+    const hay = [r.word, r.meaning, r.topic, ...(r.collocations||[])].map(norm);
+    if(mode==='starts') return hay.some(x => x.startsWith(nq));
+    return hay.some(x => x.includes(nq));
+  });
+  render(rows);
+  makeSuggestions(query);
+}
+
+function makeSuggestions(query){
+  const nq = norm(query);
+  let words = Array.from(new Set(DATA.map(r=>r.word).filter(Boolean)));
+  if(!nq){ suggest.innerHTML=''; return; }
+  if(nq.length===1){
+    words = words.filter(w => norm(w).startsWith(nq)).slice(0,12);
+  }else{
+    words = words.filter(w => norm(w).includes(nq)).slice(0,12);
+  }
+  suggest.innerHTML = words.map(w=>`<button class="pill" data-w="${w}">${w}</button>`).join('');
+  $$('#suggest .pill').forEach(b=>b.addEventListener('click',()=>{ q.value=b.dataset.w; filter(); q.focus(); }))
+}
+
+const doFilter = debounce(filter, 120);
+q.addEventListener('input', doFilter);
+modeSel.addEventListener('change', filter);
+$('#clear').addEventListener('click', ()=>{ q.value=''; filter(); q.focus(); });
+
+// initial render
+render(DATA);
+
+// -------- Add / Import / Export -------------------------------------------
+$('#addBtn').addEventListener('click', ()=>{
+  const topic = $('#topic').value.trim();
+  const word = $('#word').value.trim();
+  const meaning = $('#meaning').value.trim();
+  const coll = $('#collocations').value.split(/[,;]\s*/).filter(Boolean);
+  if(!word || !meaning) return alert('Word and meaning are required.');
+  DATA.unshift({topic, word, meaning, collocations:coll});
+  save();
+  $('#topic').value = $('#word').value = $('#meaning').value = $('#collocations').value = '';
+  filter();
+  q.focus();
+});
+
+$('#exportBtn').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(DATA, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'vocab-data.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+$('#file').addEventListener('change', async (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  const text = await f.text();
+  let rows = [];
+  try{ rows = JSON.parse(text); if(!Array.isArray(rows)) throw 0; }
+  catch{
+    // try CSV/TSV
+    const lines = text.split(/\r?\n/).filter(Boolean);
+    rows = lines.map(line => line.split(/[\t,]/)).map(c=>({
+      topic:c[0]||'', word:c[1]||'', meaning:c[2]||'', collocations:(c[3]||'').split(/;|,/).filter(Boolean)
+    }));
+  }
+  // validate
+  rows = rows.filter(r => r && r.word && r.meaning);
+  DATA = [...rows, ...DATA];
+  save();
+  filter();
+  e.target.value='';
+});
+</script>
+</body>
+</html>
