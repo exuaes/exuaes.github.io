@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#78350f">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png"> 
+  <title>Französisch Vokabeln</title>
+  <style>
+    :root{
+      --bg:#78350f; --panel:#854d0e; --muted:#fde68a; --text:#fefce8;
+      --accent:#facc15; --accent-2:#fef08a; --border:#a16207; --input:#422006;
+    }
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#713f12 40%,#422006);color:var(--text);font:16px system-ui}
+    .wrap{max-width:1100px;margin:0 auto;padding:14px;}
+    header{position:sticky;top:0;background:linear-gradient(180deg,rgba(120,53,15,.95),rgba(120,53,15,.85));border-bottom:1px solid var(--border);z-index:10}
+    header .bar{display:flex;gap:14px;align-items:end;flex-wrap:wrap;padding:14px 0}
+    h1{font-size:20px;margin:0;}
+    .sub{color:var(--muted);font-size:12px}
+    .search{display:flex;gap:10px;align-items:center;width:100%}
+    .input{position:relative;flex:1;}
+    .input input{width:100%;padding:12px 44px;border-radius:12px;border:1px solid var(--border);background:var(--input);color:var(--text)}
+    .clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:transparent;border:0;color:var(--muted);cursor:pointer}
+    .toggle{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);}
+    .toggle select{background:var(--input);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:10px;}
+    .grid{margin-top:14px;border:1px solid var(--border);border-radius:14px;overflow:auto;background:#422006}
+    table{border-collapse:separate;border-spacing:0;width:100%}
+    thead th{background:#713f12;position:sticky;top:0}
+    th,td{padding:12px 14px;border-bottom:1px solid var(--border)}
+    th{color:#fef08a;text-align:left;font-weight:600;font-size:13px}
+    td{font-size:15px;white-space:pre-wrap}
+    .word{font-weight:700;color:#fde047}
+    .cards{display:none;margin-top:14px;gap:12px;flex-direction:column}
+    .card{background:#422006;border:1px solid var(--border);border-radius:12px;padding:16px}
+    .card-word{font-size:18px;font-weight:700;margin-bottom:8px;color:#fde047}
+    .card-meaning{font-size:14px;color:#fef9c3}
+    .pill{border:1px solid var(--border);border-radius:999px;padding:6px 12px;background:var(--input);color:#fef9c3;cursor:pointer}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="bar">
+      <div>
+        <h1>Französisch Vokabeln</h1>
+        <p class="sub">Designed by EY | Powered by GitHubㅣLast Update: 2025.09.03</p>
+      </div>
+      <div class="toggle">
+        <label for="mode">Match:</label>
+        <select id="mode"><option value="contains">Contains</option><option value="starts">Starts with</option></select>
+      </div>
+    </div>
+    <form class="search" onsubmit="event.preventDefault();">
+      <div class="input">
+        <input id="q" placeholder="Suche nach Französisch oder Deutsch…" autocomplete="off" />
+        <button class="clear" id="clear">✕</button>
+      </div>
+    </form>
+    <div id="suggest" class="suggest"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+    <table id="tbl">
+      <thead>
+        <tr><th style="width:35%">Französisch</th><th>Deutsch</th></tr>
+      </thead><tbody></tbody>
+    </table>
+  </div>
+  <div class="cards" id="cards"></div>
+
+  <details>
+    <summary>Add / Import</summary>
+    <div class="row">
+      <input type="text" id="word" placeholder="Französisch" />
+      <input type="text" id="meaning" placeholder="Deutsch" />
+    </div>
+    <div class="row">
+      <button id="addBtn">Add item</button>
+      <button id="exportBtn">Export JSON</button>
+      <input type="file" id="file" accept=".json,.csv,.tsv,.txt" />
+    </div>
+  </details>
+
+  <footer>
+    <div>Items: <span id="count">0</span>. Data is saved to your browser.</div>
+  </footer>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);const $$=s=>Array.from(document.querySelectorAll(s));
+const norm=s=>(s||"").toLowerCase();
+function highlight(t,q){if(!q)return t;const nt=norm(t),nq=norm(q),i=nt.indexOf(nq);if(i<0)return t;return t.slice(0,i)+"<mark>"+t.slice(i,i+q.length)+"</mark>"+t.slice(i+q.length)}
+
+// --- Seed Data (franz_voc.pdf 일부 발췌) ---
+let DATA = [
+  {word:"une personne", meaning:"eine Person"},
+  {word:"un personnage", meaning:"eine Figur (Literatur, Film …)"},
+  {word:"un adolescent/une adolescente", meaning:"ein Jugendlicher/eine Jugendliche"},
+  {word:"mineur/mineure", meaning:"minderjährig"},
+  {word:"courageux/courageuse", meaning:"mutig"},
+  {word:"espérer faire qc", meaning:"hoffen, etw. zu tun"},
+  {word:"se débrouiller", meaning:"sich zu helfen wissen"},
+  {word:"faire une formation", meaning:"eine Ausbildung machen"},
+  {word:"une classe préparatoire", meaning:"eine Vorbereitungsklasse"},
+  {word:"la physique (f.)", meaning:"Physik (als Schulfach)"},
+  {word:"la musculation", meaning:"das Krafttraining"},
+  {word:"la voile", meaning:"das Segeln"},
+  {word:"général/générale/généraux/générales", meaning:"allgemein"},
+  {word:"Caen", meaning:"Stadt in der Normandie"},
+  {word:"la Chine", meaning:"China"},
+  {word:"un informaticien/une informaticienne", meaning:"ein Informatiker/eine Informatikerin"},
+  {word:"littéraire", meaning:"literarisch"},
+  {word:"un portrait", meaning:"ein Porträt"},
+  {word:"Colmar", meaning:"Stadt im Elsass"},
+  {word:"la Pologne", meaning:"Polen"},
+  {word:"le C.A.P.", meaning:"das C.A.P. (berufsqualifizierender Schulabschluss)"},
+  {word:"un ouvrier/une ouvrière", meaning:"ein Arbeiter/eine Arbeiterin"},
+  {word:"un ouvrier qualifié/une ouvrière qualifiée", meaning:"ein Facharbeiter/eine Facharbeiterin"},
+  {word:"un ébéniste/une ébéniste", meaning:"ein Möbeltischler/eine Möbeltischlerin"},
+  {word:"le Mali", meaning:"Staat in Westafrika"},
+  {word:"un animateur socioculturel/une animatrice socioculturelle", meaning:"ein Freizeitbetreuer/eine Freizeitbetreuerin"},
+  {word:"une bande", meaning:"eine Bande, Clique"},
+  {word:"une cité", meaning:"eine Hochhaussiedlung"},
+  {word:"une banlieue", meaning:"ein Vorort, ein Vorstadtbereich"},
+  {word:"parisien/parisienne", meaning:"Pariser (Adj.)"},
+  {word:"un visionnage", meaning:"eine Vorführung (eines Films)"},
+  {word:"une hypothèse", meaning:"eine Annahme, Vermutung"},
+  {word:"technologique", meaning:"technisch"},
+  {word:"s’orienter", meaning:"sich orientieren"},
+  {word:"un journal intime", meaning:"ein Tagebuch"},
+  {word:"s’habituer à qn/qc", meaning:"sich an jdn./etw. gewöhnen"},
+  {word:"les transports (m.) en commun", meaning:"die öffentlichen Verkehrsmittel"},
+  {word:"être pressé/pressée", meaning:"es eilig haben; in Eile sein"},
+  {word:"accrocher", meaning:"hängen bleiben"},
+  {word:"ailleurs", meaning:"an einem anderen Ort, woanders"},
+  {word:"un héros/une héroïne", meaning:"ein Held/eine Heldin"},
+  {word:"à peine", meaning:"kaum"},
+  {word:"interrompre qn/qc", meaning:"jdn./etw. unterbrechen"},
+  {word:"une pensée", meaning:"ein Gedanke"},
+  {word:"un poète/une poète", meaning:"ein Dichter/eine Dichterin"},
+  {word:"un narrateur/une narratrice", meaning:"ein Erzähler/eine Erzählerin"},
+  {word:"une action", meaning:"eine Handlung, Tat"},
+  {word:"une fiction", meaning:"eine Fiktion"},
+  {word:"divers/diverse", meaning:"verschieden, unterschiedlich"},
+  {word:"narratif/narrative", meaning:"erzählend"},
+  {word:"poétique/poétique", meaning:"poetisch, dichterisch"},
+  {word:"une observation", meaning:"eine Beobachtung"},
+  {word:"âgé/âgée de … ans", meaning:"im Alter von … Jahren"},
+  {word:"matériel/matérielle", meaning:"materiell"},
+  {word:"unique/unique", meaning:"einzig, einzigartig"},
+  {word:"un aspect", meaning:"ein Aspekt, ein Aussehen"},
+  {word:"physique/physique", meaning:"physisch, körperlich"},
+  {word:"le teint", meaning:"der Teint, die Gesichtsfarbe"},
+  {word:"mat/mate", meaning:"matt, dunkel (Hautfarbe)"},
+  {word:"frisé/frisée", meaning:"kraus, lockig"},
+  {word:"sportif/sportive", meaning:"sportlich"},
+  {word:"un caractère", meaning:"ein Charakter"},
+  {word:"le comportement", meaning:"das Verhalten"},
+  {word:"attentif/attentive", meaning:"aufmerksam"},
+  {word:"rêveur/rêveuse", meaning:"verträumt"},
+  {word:"le corps", meaning:"der Körper"},
+  {word:"le dos", meaning:"der Rücken"},
+  {word:"le bras", meaning:"der Arm"},
+  {word:"la main", meaning:"die Hand"},
+  {word:"le genou/les genoux", meaning:"das Knie/die Knie"},
+  {word:"le pied", meaning:"der Fuß"},
+  {word:"la tête", meaning:"der Kopf"},
+  {word:"l’épaule (f.)", meaning:"die Schulter"},
+  {word:"la poitrine", meaning:"die Brust"},
+  {word:"le ventre", meaning:"der Bauch"},
+  {word:"le doigt", meaning:"der Finger"},
+  {word:"la jambe", meaning:"das Bein"},
+  {word:"le visage", meaning:"das Gesicht"},
+  {word:"un cheveu/les cheveux", meaning:"ein Haar/die Haare"},
+  {word:"le nez", meaning:"die Nase"},
+  {word:"un œil/les yeux", meaning:"ein Auge/die Augen"},
+  {word:"la bouche", meaning:"der Mund"},
+  {word:"une oreille", meaning:"ein Ohr"},
+  {word:"le cou", meaning:"der Hals"}
+];
+
+// --- LocalStorage load (빈 배열일 때는 덮어쓰지 않음) ---
+try{
+  const saved=localStorage.getItem('franz-vocab-data');
+  if(saved){
+    const parsed=JSON.parse(saved);
+    if(Array.isArray(parsed)&&parsed.length>0){
+      DATA=parsed;
+    }
+  }
+}catch{}
+
+// --- Render ---
+const tbody=$("#tbl tbody"),cards=$("#cards"),q=$("#q"),modeSel=$("#mode"),countEl=$("#count");
+function save(){localStorage.setItem('franz-vocab-data',JSON.stringify(DATA))}
+function render(rows){
+  tbody.innerHTML=rows.map(r=>`<tr><td class="word">${highlight(r.word,q.value)}</td><td>${highlight(r.meaning,q.value)}</td></tr>`).join("");
+  cards.innerHTML=rows.map(r=>`<div class="card"><div class="card-word">${highlight(r.word,q.value)}</div><div class="card-meaning">${highlight(r.meaning,q.value)}</div></div>`).join("");
+  countEl.textContent=rows.length;
+}
+function filter(){const query=q.value.trim().toLowerCase();if(!query)return render(DATA);const mode=modeSel.value;const rows=DATA.filter(r=>{const hay=[r.word,r.meaning].map(norm);if(mode==="starts")return hay.some(x=>x.startsWith(query));return hay.some(x=>x.includes(query))});render(rows)}
+q.addEventListener("input",filter);modeSel.addEventListener("change",filter);$("#clear").addEventListener("click",()=>{q.value="";filter()})
+
+// --- Add/Export/Import ---
+$("#addBtn").addEventListener("click",()=>{const w=$("#word").value.trim(),m=$("#meaning").value.trim();if(!w||!m)return;DATA.unshift({word:w,meaning:m});save();filter()})
+$("#exportBtn").addEventListener("click",()=>{const b=new Blob([JSON.stringify(DATA,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="franz-vocab.json";a.click()})
+$("#file").addEventListener("change",async e=>{const f=e.target.files[0];if(!f)return;const t=await f.text();let rows=[];try{rows=JSON.parse(t)}catch{rows=t.split(/\r?\n/).map(l=>l.split(/[,\t]/)).map(c=>({word:c[0],meaning:c[1]}))}if(Array.isArray(rows)&&rows.length)DATA=[...rows,...DATA];save();filter()})
+
+// Init
+render(DATA);
+</script>
+</body>
+</html>
