@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="favicon.png" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>History Vocabulary</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background: #0a0a0a;
+      color: #ddd;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #333;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 1px;
+      color: #888;
+      margin-bottom: 0.5rem;
+    }
+
+    .meta {
+      font-size: 0.75rem;
+      color: #555;
+    }
+
+    /* Search */
+    .search-section {
+      margin-bottom: 2rem;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #ddd;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #444;
+    }
+
+    button, select {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #ddd;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    button:hover, select:hover {
+      background: #252525;
+      border-color: #444;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .suggestions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #aaa;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .pill:hover {
+      border-color: #444;
+    }
+
+    /* Table */
+    .table-wrapper {
+      border: 1px solid #333;
+      overflow-x: auto;
+      margin-bottom: 2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #333;
+    }
+
+    th {
+      background: #151515;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      font-size: 0.9rem;
+    }
+
+    tr:hover td {
+      background: #151515;
+    }
+
+    .topic { color: #888; font-size: 0.85rem; }
+    .word { font-weight: 600; }
+
+    mark {
+      background: #ffd700;
+      color: #000;
+      padding: 0 2px;
+    }
+
+    /* Cards (Mobile) */
+    .cards {
+      display: none;
+    }
+
+    .card {
+      background: #151515;
+      border: 1px solid #333;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-topic {
+      font-size: 0.75rem;
+      color: #888;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-word {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-meaning {
+      color: #bbb;
+      line-height: 1.5;
+    }
+
+    /* Add Section */
+    .add-section {
+      background: #151515;
+      border: 1px solid #333;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .add-section h3 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: #aaa;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .form-row input {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .form-row button {
+      white-space: nowrap;
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: #555;
+      font-size: 0.8rem;
+      border-top: 1px solid #333;
+    }
+
+    .count {
+      color: #888;
+      font-weight: 600;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .table-wrapper { display: none; }
+      .cards { display: block; }
+      .form-row { flex-direction: column; }
+      .form-row input { min-width: auto; width: 100%; }
+      h1 { font-size: 1.25rem; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 1rem 0.5rem; }
+      .search-bar { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>History Vocabulary</h1>
+      <div class="meta">Designed by EY • Last Update: 2025.09.16</div>
+    </header>
+
+    <div class="search-section">
+      <div class="search-bar">
+        <input type="text" id="q" placeholder="Suche nach Wort oder Bedeutung..." />
+        <button id="clear">Clear</button>
+        <select id="mode">
+          <option value="contains">Contains</option>
+          <option value="starts">Starts with</option>
+        </select>
+      </div>
+      <div id="suggest" class="suggestions"></div>
+    </div>
+
+    <!-- Desktop table -->
+    <div class="table-wrapper">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th style="width:18%">Thema</th>
+            <th style="width:22%">Wort / Ausdruck</th>
+            <th>Bedeutung</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Mobile cards -->
+    <div class="cards" id="cards"></div>
+
+    <!-- Add/Import Section -->
+    <div class="add-section">
+      <h3>Add Vocabulary</h3>
+      <div class="form-row">
+        <input type="text" id="topic" placeholder="Thema" />
+        <input type="text" id="word" placeholder="Wort / Ausdruck" />
+      </div>
+      <div class="form-row">
+        <input type="text" id="meaning" placeholder="Bedeutung" />
+      </div>
+      <div class="form-row">
+        <button id="addBtn">Add</button>
+        <button id="exportBtn">Export JSON</button>
+        <label style="display:inline-block">
+          <input type="file" id="file" accept=".json,.csv,.tsv" style="display:none" />
+          <button type="button" onclick="document.getElementById('file').click()">Import</button>
+        </label>
+      </div>
+      <div class="hint">CSV/TSV format: topic, word, meaning</div>
+    </div>
+
+    <footer>
+      <div>Total: <span id="count" class="count">0</span> items • Saved in LocalStorage</div>
+    </footer>
+  </div>
+
+<script>
+// Utilities
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+const norm = s => (s||"").toLowerCase().normalize("NFKD").replace(/\p{Diacritic}/gu,"");
+
+function highlight(text, q){
+  if(!q) return text;
+  const t = String(text);
+  const nt = norm(t), nq = norm(q);
+  const i = nt.indexOf(nq);
+  if(i<0) return t;
+  return t.slice(0,i) + '<mark>' + t.slice(i,i+q.length) + '</mark>' + t.slice(i+q.length);
+}
+
+function debounce(fn, ms){ 
+  let t; 
+  return (...a)=>{ 
+    clearTimeout(t); 
+    t=setTimeout(()=>fn(...a), ms); 
+  } 
+}
+
+// Seed data
+let DATA = [
+  {topic:"History", word:"Versailles, Treaty of", meaning:"(Vertrag von Versailles) A peace treaty between the German Empire(Groß Preußen) and the Allied powers signed on 28 June 1919, According to the treaty, Germany had to accept sole responsibility for starting the war. The German Empire also had to disarm, to give up some territories and to pay reparations to other countries."},
+  {topic:"History", word:"armistice", meaning:"(Der Waffenstillstand) When opposing armies agree to stop fighting. The armistice ending World War I was signed near Compiègne, France on 11 Novem-ber 1918. Today the end of the First World War is still remembered in many countries on the eleventh hour of the eleventh day of the eleventh month. This day is also known as Remembrance Day or Veterans' Day"},
+  {topic:"History", word:"League of Nations", meaning:"(Der Voekerbund) An organization for international cooperation which was founded as a result of the Treaty of Versailles in 1919. Its chief principles were collective security, arbitration in international dis-putes, weapon reductions and open diplomacy. As the USA never joined and its members increasingly put their own national interests first in the 1930s, it never became a success. It was replaced by the United Nations in 1945."},
+  {topic:"History", word:"reparations", meaning:"(die Reparationen) The compensation paid by a nation defeated in war to the victor/sin order to cover the damages that were caused during the war. Reparations are usually paid in money and/or goods."}
+];
+
+// Load from localStorage
+try{
+  const saved = localStorage.getItem('history-vocab-data');
+  if(saved) DATA = JSON.parse(saved);
+}catch{}
+
+// DOM
+const tbody = $('#tbl tbody');
+const cards = $('#cards');
+const q = $('#q');
+const modeSel = $('#mode');
+const suggest = $('#suggest');
+const countEl = $('#count');
+
+function save(){ 
+  try{ 
+    localStorage.setItem('history-vocab-data', JSON.stringify(DATA)); 
+  }catch{} 
+}
+
+function renderTable(rows){
+  tbody.innerHTML = rows.map(r => {
+    const query = q.value.trim();
+    return `<tr>
+      <td class="topic">${highlight(r.topic||'', query)}</td>
+      <td class="word">${highlight(r.word||'', query)}</td>
+      <td>${highlight(r.meaning||'', query)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderCards(rows){
+  const query = q.value.trim();
+  cards.innerHTML = rows.map(r => {
+    return `<div class="card">
+      ${r.topic ? `<div class="card-topic">${highlight(r.topic, query)}</div>` : ''}
+      <div class="card-word">${highlight(r.word||'', query)}</div>
+      <div class="card-meaning">${highlight(r.meaning||'', query)}</div>
+    </div>`;
+  }).join('');
+}
+
+function render(rows){
+  renderTable(rows);
+  renderCards(rows);
+  if(countEl) countEl.textContent = rows.length;
+}
+
+function filter(){
+  const query = q.value.trim();
+  if(!query){ render(DATA); makeSuggestions(''); return; }
+  const nq = norm(query);
+  const mode = modeSel.value;
+  const rows = DATA.filter(r => {
+    const hay = [r.word, r.meaning, r.topic].map(norm);
+    if(mode==='starts') return hay.some(x => x.startsWith(nq));
+    return hay.some(x => x.includes(nq));
+  });
+  render(rows);
+  makeSuggestions(query);
+}
+
+function makeSuggestions(query){
+  const nq = norm(query);
+  let words = Array.from(new Set(DATA.map(r=>r.word).filter(Boolean)));
+  if(!nq){ suggest.innerHTML=''; return; }
+  if(nq.length===1){
+    words = words.filter(w => norm(w).startsWith(nq)).slice(0,12);
+  }else{
+    words = words.filter(w => norm(w).includes(nq)).slice(0,12);
+  }
+  suggest.innerHTML = words.map(w=>`<button class="pill" data-w="${w}">${w}</button>`).join('');
+  $$('.pill').forEach(b=>b.addEventListener('click',()=>{ q.value=b.dataset.w; filter(); q.focus(); }))
+}
+
+const doFilter = debounce(filter, 120);
+q.addEventListener('input', doFilter);
+modeSel.addEventListener('change', filter);
+$('#clear').addEventListener('click', ()=>{ q.value=''; filter(); q.focus(); });
+
+// Initial render
+render(DATA);
+
+// Add
+$('#addBtn').addEventListener('click', ()=>{
+  const topic = $('#topic').value.trim();
+  const word = $('#word').value.trim();
+  const meaning = $('#meaning').value.trim();
+  if(!word || !meaning) return alert('Word and meaning are required.');
+  DATA.unshift({topic, word, meaning});
+  save();
+  $('#topic').value = $('#word').value = $('#meaning').value = '';
+  filter();
+  q.focus();
+});
+
+// Export
+$('#exportBtn').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(DATA, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'history-vocab.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+// Import
+$('#file').addEventListener('change', async (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  const text = await f.text();
+  let rows = [];
+  try{ 
+    rows = JSON.parse(text); 
+    if(!Array.isArray(rows)) throw 0; 
+  }
+  catch{
+    const lines = text.split(/\r?\n/).filter(Boolean);
+    rows = lines.map(line => line.split(/[\t,]/)).map(c=>({ 
+      topic:c[0]||'', 
+      word:c[1]||'', 
+      meaning:c[2]||'' 
+    }));
+  }
+  rows = rows.filter(r => r && r.word && r.meaning);
+  DATA = [...rows, ...DATA];
+  save();
+  filter();
+  e.target.value='';
+});
+</script>
+</body>
+</html>
