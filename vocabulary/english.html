@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="icon" href="favicon.png" type="image/x-icon">
+  <title>Vocabulary Finder - English</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background: #0a0a0a;
+      color: #ddd;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #333;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 1px;
+      color: #888;
+      margin-bottom: 0.5rem;
+    }
+
+    .meta {
+      font-size: 0.75rem;
+      color: #555;
+    }
+
+    /* Search */
+    .search-section {
+      margin-bottom: 2rem;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #ddd;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #444;
+    }
+
+    button, select {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #ddd;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    button:hover, select:hover {
+      background: #252525;
+      border-color: #444;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .suggestions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #aaa;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .pill:hover {
+      border-color: #444;
+    }
+
+    /* Table */
+    .table-wrapper {
+      border: 1px solid #333;
+      overflow-x: auto;
+      margin-bottom: 2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #333;
+    }
+
+    th {
+      background: #151515;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      font-size: 0.9rem;
+    }
+
+    tr:hover td {
+      background: #151515;
+    }
+
+    .topic { color: #888; font-size: 0.85rem; }
+    .word { font-weight: 600; }
+
+    mark {
+      background: #ffd700;
+      color: #000;
+      padding: 0 2px;
+    }
+
+    /* Cards (Mobile) */
+    .cards {
+      display: none;
+    }
+
+    .card {
+      background: #151515;
+      border: 1px solid #333;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-topic {
+      font-size: 0.75rem;
+      color: #888;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-word {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-meaning {
+      margin-bottom: 0.75rem;
+      color: #bbb;
+    }
+
+    .card-collocations {
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    /* Add Section */
+    .add-section {
+      background: #151515;
+      border: 1px solid #333;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .add-section h3 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: #aaa;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .form-row input {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .form-row button {
+      white-space: nowrap;
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: #555;
+      font-size: 0.8rem;
+      border-top: 1px solid #333;
+    }
+
+    .count {
+      color: #888;
+      font-weight: 600;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .table-wrapper { display: none; }
+      .cards { display: block; }
+      .form-row { flex-direction: column; }
+      .form-row input { min-width: auto; width: 100%; }
+      h1 { font-size: 1.25rem; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 1rem 0.5rem; }
+      .search-bar { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>English Vocabulary</h1>
+      <div class="meta">Designed by EY • Last Update: 2026.02.02</div>
+    </header>
+
+    <div class="search-section">
+      <div class="search-bar">
+        <input type="text" id="q" placeholder="Search word, meaning, or collocations..." />
+        <button id="clear">Clear</button>
+        <select id="mode">
+          <option value="contains">Contains</option>
+          <option value="starts">Starts with</option>
+        </select>
+      </div>
+      <div id="suggest" class="suggestions"></div>
+    </div>
+
+    <!-- Desktop table -->
+    <div class="table-wrapper">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th style="width:18%">Topic</th>
+            <th style="width:22%">Word</th>
+            <th>Meaning</th>
+            <th style="width:28%">Collocations</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Mobile cards -->
+    <div class="cards" id="cards"></div>
+
+    <!-- Add/Import Section -->
+    <div class="add-section">
+      <h3>Add Vocabulary</h3>
+      <div class="form-row">
+        <input type="text" id="topic" placeholder="Topic (optional)" />
+        <input type="text" id="word" placeholder="Word / Expression" />
+      </div>
+      <div class="form-row">
+        <input type="text" id="meaning" placeholder="Meaning" />
+      </div>
+      <div class="form-row">
+        <input type="text" id="collocations" placeholder="Collocations (comma-separated)" />
+      </div>
+      <div class="form-row">
+        <button id="addBtn">Add</button>
+        <button id="exportBtn">Export JSON</button>
+        <label style="display:inline-block">
+          <input type="file" id="file" accept=".json,.csv,.tsv" style="display:none" />
+          <button type="button" onclick="document.getElementById('file').click()">Import</button>
+        </label>
+      </div>
+      <div class="hint">CSV/TSV format: topic, word, meaning, collocations (separated by ; or ,)</div>
+    </div>
+
+    <footer>
+      <div>Total: <span id="count" class="count">0</span> items • Saved in LocalStorage</div>
+    </footer>
+  </div>
+
+<script>
+// Utilities
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+const norm = s => (s||"").toLowerCase().normalize("NFKD").replace(/\p{Diacritic}/gu,"");
+
+function highlight(text, q){
+  if(!q) return text;
+  const t = String(text);
+  const nt = norm(t), nq = norm(q);
+  const i = nt.indexOf(nq);
+  if(i<0) return t;
+  return t.slice(0,i) + '<mark>' + t.slice(i,i+q.length) + '</mark>' + t.slice(i+q.length);
+}
+
+function debounce(fn, ms){ 
+  let t; 
+  return (...a)=>{ 
+    clearTimeout(t); 
+    t=setTimeout(()=>fn(...a), ms); 
+  } 
+}
+
+// Seed data
+let DATA = [
+  {topic:"NOTW world of work", word:"to veto", meaning:"to reject (a proposed law) officially ; to refuse to allow (a bill) to become a law", collocations:["to veto a bill","to veto legislation"]},
+  {topic:"NOTW peace", word:"bilateral", meaning:"involving two groups or countries", collocations:["bilateral cooperation","bilateral negotiations"]},
+  {topic:"NOTW peace", word:"reaffirmation", meaning:"a reassertion or confirmation of a fact or belief", collocations:["reaffirmation of.."]},
+  {topic:"NOTW peace", word:"to pledge", meaning:"to formally promise or agree to give or do something", collocations:["to pledge support","to pledge commitment"]},
+  {topic:"NOTW technology", word:"stake", meaning:"an interest or degree of involvement in something", collocations:["to have stake in.."]},
+  {topic:"NOTW 2025.08.28", word:"Summit", meaning:"meeting of leaders", collocations:["hold a summit","international summit","peace summit"]},
+  {topic:"NOTW 2025.08.28", word:"Diplomacy", meaning:"peaceful talk between countries", collocations:["practice diplomacy","shuttle diplomacy","diplomacy skills"]},
+  {topic:"NOTW 2025.08.28", word:"Alliance", meaning:"group that helps each other", collocations:["form an alliance","military alliance","strategic alliance"]},
+  {topic:"NOTW 2025.08.28", word:"Inequality", meaning:"unfair difference between people", collocations:["reduce inequality","social inequality","income inequality"]},
+  {topic:"NOTW 2025.08.28", word:"Literacy", meaning:"being able to read and write", collocations:["literacy rate","digital literacy","promote literacy"]},
+  {topic:"NOTW world of work", word:"Productivity", meaning:"how much work is completed in a certain time", collocations:["to increase productivity","to boost productivity"]},
+  {topic:"NOTW world of work", word:"Well-being", meaning:"a person´s health and happiness", collocations:["physical well-being","mental well-being"]},
+  {topic:"NOTW world of work", word:"Pilot Program", meaning:"a test period to see if something works", collocations:["to run a pilot program","test a pilot program"]},
+  {topic:"NOTW world of work", word:"Work-life balance", meaning:"the balance between time for work and personal life", collocations:["to maintain work-life balance","to improve work-life balance"]},
+  {topic:"NOTW world of work", word:"Burnout", meaning:"extreme tiredness and stress caused by too much work", collocations:["to experience burnout","to suffer from burnout"]},
+  {topic:"nan", word:"collocation", meaning:"is NOT a synonym.... LOOK IT UP", collocations:[]},
+  {topic:"NOTW peace", word:"buffer zone", meaning:"a neutral area serving to seperate hostile forces or nations", collocations:["...-km-wide buffer zone between..."]},
+  {topic:"NOTW peace", word:"full-scale", meaning:"that is as complete and careful as possible", collocations:["a full-scale attack","search of an area"]},
+  {topic:"NOTW peace", word:"aerial", meaning:"from a plane / in the air", collocations:["aerial attacks","photography","view"]},
+  {topic:"NOTW politics", word:"to stipulate", meaning:"to state clearly and definitely that something must be done", collocations:["to stipulate sth.","to stipulate that...","to stipulate what","how","etc..."]},
+  {topic:"NOTW politics", word:"confiscation", meaning:"the act of officially taking something away from somebody, esp. as a punishment", collocations:["confiscation of goods","etc."]},
+  {topic:"NOTW peace", word:"Activist", meaning:"a person who takes action for a cause", collocations:["peace activist","human rights activist"]},
+  {topic:"NOTW world of work", word:"Protest", meaning:"an action to show disagreement or demand change", collocations:["organize a protest","peaceful protest"]},
+  {topic:"NOTW world of work", word:"Contract", meaning:"a legal agreement between two sides", collocations:["sign a contract","break a contract"]},
+  {topic:"NOTW transfer", word:"Transfer fee", meaning:"money paid by one club to another for a player", collocations:["record transfer fee","pay a transfer fee"]},
+  {topic:"NOTW transfer", word:"Record-breaking", meaning:"better, higher, or bigger than ever before", collocations:["record-breaking transfer","record-breaking season"]},
+  {topic:"NOTW", word:"Dominance", meaning:"Control or power over others", collocations:["The company showed its dominance in the market by beating all competitors."]},
+  {topic:"NOTW", word:"Autonomous", meaning:"Acting independently, self-governing", collocations:["The new robot is autonomous","meaning it can clean the house by itself."]},
+  {topic:"NOTW", word:"Algorithm", meaning:"A set of rules/instructions for solving problems", collocations:["Google uses a complex algorithm to decide which websites appear first in search results."]},
+  {topic:"NOTW", word:"Unprecedented", meaning:"Never happened before", collocations:["Never happened before"]},
+  {topic:"NOTW", word:"Phenomenon", meaning:"An observable event or situation", collocations:["AI development is a rapidly evolving phenomenon"]},
+  {topic:"nan", word:"tariff", meaning:"tax on important goods", collocations:[]},
+  {topic:"nan", word:"ceasefire", meaning:"stop fighting in a war", collocations:[]},
+  {topic:"nan", word:"famine", meaning:"when many people do not have enough food", collocations:[]},
+  {topic:"nan", word:"advocate", meaning:"demand", collocations:[]},
+  {topic:"NOTW world of work", word:"to lay off", meaning:"to stop employing someone", collocations:["lay off workers","staff","employees"]},
+  {topic:"NOTW world of work", word:"automation", meaning:"Machines or Computers doing peoples tasks", collocations:["automation of jobs","tasks"]},
+  {topic:"NOTW", word:"power outage", meaning:"power outage means that the electricity supply is cut off in an area for some time", collocations:["widespread power outage"]},
+  {topic:"NOTW peace", word:"prominent", meaning:"Important, well-known, or easily noticed", collocations:["prominent leader"]},
+  {topic:"NOTW peace", word:"negotiate", meaning:"negotiate means to discuss something in order to reach an agreement.", collocations:["negotiate a deal","agreement","contract"]},
+  {topic:"NOTW world of work", word:"to conduct", meaning:"to organize and perform a particular activity", collocations:["conduct an experiment","a drill"]},
+  {topic:"NOTW world of work", word:"drill", meaning:"a practice or training exercise, especially for emergencies or military operations", collocations:["conduct a drill","safety drill","defense drill"]},
+  {topic:"NOTW peace", word:"partial", meaning:"not complete; only part of something", collocations:["partial strike","partial payment","partial view"]},
+  {topic:"NOTW peace", word:"to stage", meaning:"to organize or carry out an event, protest, or performance", collocations:["stage a strike","stage a protest","stage an event"]},
+  {topic:"NOTW social affairs", word:"spike", meaning:"a sudden and sharp increase", collocations:["price spike","to spike sharply"]},
+  {topic:"NOTW", word:"Regulator", meaning:"a person or body that supervises a particular industry or business activity", collocations:["environmental regulator"]},
+  {topic:"NOTW", word:"Verdict", meaning:"a decision on a disputed issue in a civil or criminal case or an inquest", collocations:["final verdict"]},
+  {topic:"NOTW", word:"Withdrawal", meaning:"an act of taking money out of an account", collocations:["abrupt withdrawal"]},
+  {topic:"NOTW", word:"Drought", meaning:"a prolonged period of abnormally low rainfall, leading to a shortage of water", collocations:["drought stress"]},
+  {topic:"NOTW", word:"Brink", meaning:"a point at which something,typically something unwelcome is about to happen", collocations:["brink of death"]},
+  {topic:"nan", word:"Chartered", meaning:"officially recognized or licensed by law or authority.", collocations:[]},
+  {topic:"nan", word:"to spread unrest", meaning:"to cause or encourage disorder, protests, or instability.", collocations:[]},
+  {topic:"nan", word:"deportation", meaning:"the forced removal of someone from a country.", collocations:[]},
+  {topic:"nan", word:"raid", meaning:"A rapid surprise visit by police, immigration, or other officials to arrest suspects.", collocations:[]},
+  {topic:"NOTW", word:"Automation", meaning:"Machines or computers doing work instead of people", collocations:[]},
+  {topic:"NOTW", word:"Inequality", meaning:"Unfair difference between rich and poor", collocations:[]},
+  {topic:"NOTW", word:"Supply chain", meaning:"Steps of making and delivering products", collocations:[]},
+  {topic:"NOTW", word:"Reskilling", meaning:"Learning new skills for a new job", collocations:[]},
+  {topic:"NOTW", word:"Ceasefire", meaning:"Agreement to stop fighting for a time", collocations:[]},
+  {topic:"NOTW", word:"Occupation", meaning:"When one country controls another’s land", collocations:[]},
+  {topic:"NOTW", word:"Sanctions", meaning:"Punishments like trade limits against a country", collocations:[]},
+  {topic:"NOTW", word:"Denuclearization", meaning:"To remove nuclear weapons from someone.", collocations:[]},
+  {topic:"NOTW", word:"Prosperity", meaning:"Success in material terms.", collocations:[]},
+  {topic:"NOTW", word:"indomitable", meaning:"Impossible to subdue or defeat.", collocations:[]},
+  {topic:"NOTW", word:"ferocious", meaning:"Savagely fierce,cruel or violent.", collocations:[]},
+  {topic:"NOTW", word:"toppled", meaning:"Cause something to become unsteady and fall.", collocations:[]},
+  {topic:"NOTW", word:"gruesome", meaning:"very unpleasant and filling you with horror, usually because it is connected with death or injury", collocations:["a gruesome murder","crime scene","discovery","accident ...gruesome details..."]},
+  {topic:"NOTW", word:"provocation", meaning:"the act of doing or saying something deliberately in order to make somebody angry or upset; something that is done or said to cause this", collocations:["without","direct","deliberate provocationto respond to provocationan act of provocation"]},
+  {topic:"NOTW", word:"affiliate", meaning:"?a company, an organization, etc. that is connected with or controlled by another, larger one", collocations:["local","corporate affiliateaffiliate organization"]},
+  {topic:"NOTW", word:"to vow", meaning:"?to make a formal and serious promise to do something", collocations:["to vow to continue","fightto vow loyalty"]},
+  {topic:"NOTW", word:"hybrid warfare", meaning:"strategy that combines conventional tactics (kinetic warfare) with unconventional methods (non-kinetic warfare)", collocations:["hybrid warfare tactics","strategysubjected to hybrid warfarehybrid warfare operations"]},
+  {topic:"NOTW", word:"Affordable", meaning:"cheap enough for ordinary people to buy or pay", collocations:["Affordable housing","affordable prices"]},
+  {topic:"NOTW", word:"to negotiate", meaning:"to discuss something in order to reach an agreement", collocations:["negotiate peace","negotiate a contract","negotiate terms"]},
+  {topic:"NOTW", word:"authentic", meaning:"real, genuine, not fake or copied", collocations:["authentic experience","authentic voice","authentic acting"]},
+  {topic:"NOTW", word:"to cooperate", meaning:"to work together with others for a common goal", collocations:["cooperate with others","cooperate fully","cooperate in a project"]},
+  {topic:"NOTW", word:"inequality", meaning:"an unfair situation where some people have more than others", collocations:["social inequality","income inequality","fight inequality"]},
+  {topic:"NOTW", word:"uproot", meaning:"To remove completely from a place or situation", collocations:["uproot a family","uproot a tree","uproot from home","forcibly uproot"]},
+  {topic:"NOTW", word:"sovereignty", meaning:"The full right and power of a state to govern itself", collocations:["national sovereignty","exercise sovereignty","respect sovereignty","threaten sovereignty"]},
+  {topic:"NOTW", word:"maximalist", meaning:"Someone who seeks the largest possible gains or results, often uncompromising", collocations:["maximalist position","maximalist approach","maximalist demands"]},
+  {topic:"NOTW", word:"agenda", meaning:"A list of things to be done or discussed; a plan or intention", collocations:["set the agenda","hidden agenda","political agenda","push an agenda"]},
+  {topic:"NOTW", word:"facilitate", meaning:"To make something easier or help it happen.", collocations:["facilitate learning","facilitate communication","facilitate trade","facilitate discussion"]},
+  {topic:"NOTW", word:"asset", meaning:"something valuable, especially money or property", collocations:[]},
+  {topic:"NOTW", word:"controversial", meaning:"causing disagreement or public debate", collocations:[]},
+  {topic:"NOTW", word:"confiscate", meaning:"to officially take something away", collocations:[]},
+  {topic:"NOTW", word:"collateral", meaning:"something used as a guarantee for a loan", collocations:[]},
+  {topic:"NOTW", word:"displacement", meaning:"displace is when people are forced to leave their homes because of war or crisis", collocations:[]},
+  {topic:"nan", word:"to enhance smth.", meaning:"nan", collocations:[]},
+  {topic:"nan", word:"QR code", meaning:"- quick response code", collocations:[]},
+  {topic:"NOTW", word:"to deteriorate", meaning:"to become worse over time", collocations:["deterioating conditions"]},
+  {topic:"NOTW", word:"tension", meaning:"stress or conflict between groups or countries", collocations:["political tension"]},
+  {topic:"NOTW", word:"significant", meaning:"important or meaningful", collocations:["significant impact"]},
+  {topic:"NOTW", word:"intervention", meaning:"action taken to change a situation, usually by a government", collocations:["international intervention"]},
+  {topic:"NOTW", word:"fragile", meaning:"easily broken or damaged", collocations:["fragile peace"]},
+  {topic:"NOTW", word:"cold case", meaning:"a crime that has not been solved for a long time", collocations:["reopen a cold case"]},
+  {topic:"NOTW", word:"to investigate", meaning:"to carefully examine a case or situation", collocations:["investigate a crime"]},
+  {topic:"NOTW", word:"addictive", meaning:"causing strong desire and difficulty to stop", collocations:["addictive video games"]},
+  {topic:"NOTW", word:"to cooperate", meaning:"to work together with others", collocations:["cooperate with authorities"]},
+  {topic:"NOTW", word:"data protection", meaning:"laws and measures to keep personal information safe", collocations:["data protection laws"]},
+  {topic:"NOTW", word:"pivot", meaning:"the central point,pin or shaft on which a mechanism turns or oscillates", collocations:[]},
+  {topic:"NOTW", word:"to built rapport", meaning:"establishing a connection with someone based on mutual trust,respect and understanding", collocations:[]},
+  {topic:"NOTW", word:"grievances", meaning:"a real or imagined wrong or other cause for complaint or protest, especially unfair treatment", collocations:[]},
+  {topic:"NOTW", word:"to accumulate", meaning:"gather together or acquire an increasing number or quantity of something", collocations:[]},
+  {topic:"NOTW", word:"jagged", meaning:"having rough‚sharp points protruding", collocations:[]},
+];
+
+// Load from localStorage
+try{
+  const saved = localStorage.getItem('vocab-data');
+  if(saved) DATA = JSON.parse(saved);
+}catch{}
+
+// DOM
+const tbody = $('#tbl tbody');
+const cards = $('#cards');
+const q = $('#q');
+const modeSel = $('#mode');
+const suggest = $('#suggest');
+const countEl = $('#count');
+
+function save(){ 
+  try{ 
+    localStorage.setItem('vocab-data', JSON.stringify(DATA)); 
+  }catch{} 
+}
+
+function renderTable(rows){
+  tbody.innerHTML = rows.map(r => {
+    const coll = (r.collocations||[]).join(', ');
+    const query = q.value.trim();
+    return `<tr>
+      <td class="topic">${highlight(r.topic||'', query)}</td>
+      <td class="word">${highlight(r.word||'', query)}</td>
+      <td>${highlight(r.meaning||'', query)}</td>
+      <td>${highlight(coll, query)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderCards(rows){
+  const query = q.value.trim();
+  cards.innerHTML = rows.map(r => {
+    const coll = (r.collocations||[]).map(c => `${highlight(c, query)}`).join(', ');
+    return `<div class="card">
+      ${r.topic ? `<div class="card-topic">${highlight(r.topic, query)}</div>` : ''}
+      <div class="card-word">${highlight(r.word||'', query)}</div>
+      <div class="card-meaning">${highlight(r.meaning||'', query)}</div>
+      ${coll ? `<div class="card-collocations"><strong>Collocations:</strong> ${coll}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function render(rows){
+  renderTable(rows);
+  renderCards(rows);
+  if(countEl) countEl.textContent = rows.length;
+}
+
+function filter(){
+  const query = q.value.trim();
+  if(!query){ render(DATA); makeSuggestions(''); return; }
+  const nq = norm(query);
+  const mode = modeSel.value;
+  const rows = DATA.filter(r => {
+    const hay = [r.word, r.meaning, r.topic, ...(r.collocations||[])].map(norm);
+    if(mode==='starts') return hay.some(x => x.startsWith(nq));
+    return hay.some(x => x.includes(nq));
+  });
+  render(rows);
+  makeSuggestions(query);
+}
+
+function makeSuggestions(query){
+  const nq = norm(query);
+  let words = Array.from(new Set(DATA.map(r=>r.word).filter(Boolean)));
+  if(!nq){ suggest.innerHTML=''; return; }
+  if(nq.length===1){
+    words = words.filter(w => norm(w).startsWith(nq)).slice(0,12);
+  }else{
+    words = words.filter(w => norm(w).includes(nq)).slice(0,12);
+  }
+  suggest.innerHTML = words.map(w=>`<button class="pill" data-w="${w}">${w}</button>`).join('');
+  $$('.pill').forEach(b=>b.addEventListener('click',()=>{ q.value=b.dataset.w; filter(); q.focus(); }))
+}
+
+const doFilter = debounce(filter, 120);
+q.addEventListener('input', doFilter);
+modeSel.addEventListener('change', filter);
+$('#clear').addEventListener('click', ()=>{ q.value=''; filter(); q.focus(); });
+
+// Initial render
+render(DATA);
+
+// Add
+$('#addBtn').addEventListener('click', ()=>{
+  const topic = $('#topic').value.trim();
+  const word = $('#word').value.trim();
+  const meaning = $('#meaning').value.trim();
+  const coll = $('#collocations').value.split(/[,;]\s*/).filter(Boolean);
+  if(!word || !meaning) return alert('Word and meaning are required.');
+  DATA.unshift({topic, word, meaning, collocations:coll});
+  save();
+  $('#topic').value = $('#word').value = $('#meaning').value = $('#collocations').value = '';
+  filter();
+  q.focus();
+});
+
+// Export
+$('#exportBtn').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(DATA, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'vocab-data.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+// Import
+$('#file').addEventListener('change', async (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  const text = await f.text();
+  let rows = [];
+  try{ 
+    rows = JSON.parse(text); 
+    if(!Array.isArray(rows)) throw 0; 
+  }
+  catch{
+    // CSV/TSV
+    const lines = text.split(/\r?\n/).filter(Boolean);
+    rows = lines.map(line => line.split(/[\t,]/)).map(c=>({
+      topic:c[0]||'', 
+      word:c[1]||'', 
+      meaning:c[2]||'', 
+      collocations:(c[3]||'').split(/;|,/).filter(Boolean)
+    }));
+  }
+  rows = rows.filter(r => r && r.word && r.meaning);
+  DATA = [...rows, ...DATA];
+  save();
+  filter();
+  e.target.value='';
+});
+</script>
+</body>
+</html>
