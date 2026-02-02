@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Présentation - Pays de la Loire</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .slide-number {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .slide-title {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .slide-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .slide-content {
+            line-height: 1.8;
+            font-size: 18px;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .slide-content p {
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-button {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .emergency-exit {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #e74c3c;
+            color: white;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .emergency-exit:hover {
+            background: #c0392b;
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-content {
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="slide-header">
+            <div class="slide-icon" id="slideIcon">🎤</div>
+            <div class="slide-number" id="slideNumber">Slide 1 / 6</div>
+            <h1 class="slide-title" id="slideTitle">Introduction</h1>
+        </div>
+
+        <div class="slide-content" id="slideContent">
+            <p>Bonjour. Aujourd'hui, je vais vous présenter la région Pays de la Loire.</p>
+            <p>Pays de la Loire se trouve à l'ouest de la France. La capitale de la région est Nantes.</p>
+            <p>Cette région est connue pour sa nature, son histoire et l'océan Atlantique.</p>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevButton" onclick="previousSlide()">← 이전 페이지</button>
+            <button class="nav-button" id="nextButton" onclick="nextSlide()">다음 페이지 →</button>
+        </div>
+
+        <button class="emergency-exit" onclick="emergencyExit()">긴급탈출</button>
+    </div>
+
+    <script>
+        const slides = [
+            {
+                icon: '🎤',
+                title: 'Introduction',
+                content: [
+                    "Bonjour. Aujourd'hui, je vais vous présenter la région Pays de la Loire.",
+                    "Pays de la Loire se trouve à l'ouest de la France. La capitale de la région est Nantes.",
+                    "Cette région est connue pour sa nature, son histoire et l'océan Atlantique."
+                ]
+            },
+            {
+                icon: '🗺',
+                title: 'Localisation',
+                content: [
+                    "La région est située près de l'océan Atlantique. Nantes est la plus grande ville.",
+                    "Pays de la Loire a cinq départements : Loire-Atlantique, Maine-et-Loire, Mayenne, Sarthe et Vendée.",
+                    "On peut y voir des plages, des rivières et de grandes zones vertes."
+                ]
+            },
+            {
+                icon: '🕰',
+                title: 'Histoire',
+                content: [
+                    "La Loire traverse toute la région. C'est le plus long fleuve de France.",
+                    "Dans le passé, la région appartenait à des provinces comme Anjou et Bretagne.",
+                    "Aujourd'hui, on trouve beaucoup de châteaux et de bâtiments historiques."
+                ]
+            },
+            {
+                icon: '🏰',
+                title: 'Lieux célèbres',
+                content: [
+                    "Le Puy du Fou est un parc avec des spectacles historiques. Il est très connu en France.",
+                    "À Nantes, il y a les Machines de l'Île avec un grand éléphant mécanique.",
+                    "Le château d'Angers est un grand château du Moyen Âge."
+                ]
+            },
+            {
+                icon: '🚴',
+                title: 'Activités',
+                content: [
+                    "On peut visiter des châteaux et des villes. On peut se détendre à la plage.",
+                    "On peut faire du vélo le long de la Loire. On peut aussi faire du kayak.",
+                    "La région est aussi connue pour le vin et le fromage."
+                ]
+            },
+            {
+                icon: '✅',
+                title: 'Conclusion',
+                content: [
+                    "Pays de la Loire est une région intéressante et variée. Il y a la mer, des rivières et des châteaux.",
+                    "C'est une bonne région pour voyager et découvrir la France.",
+                    "Merci de votre attention. Avez-vous des questions ?"
+                ]
+            }
+        ];
+
+        let currentSlide = 0;
+
+        function updateSlide() {
+            const slide = slides[currentSlide];
+            
+            document.getElementById('slideIcon').textContent = slide.icon;
+            document.getElementById('slideNumber').textContent = `Slide ${currentSlide + 1} / ${slides.length}`;
+            document.getElementById('slideTitle').textContent = slide.title;
+            
+            const contentHtml = slide.content.map(p => `<p>${p}</p>`).join('');
+            document.getElementById('slideContent').innerHTML = contentHtml;
+            
+            document.getElementById('prevButton').disabled = currentSlide === 0;
+            document.getElementById('nextButton').disabled = currentSlide === slides.length - 1;
+            
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function emergencyExit() {
+            window.location.href = 'https://andrin.xyz/lesson/french/220260127.html';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (event.key === 'Escape') {
+                emergencyExit();
+            }
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>
