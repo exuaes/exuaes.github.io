@@ -64,7 +64,7 @@ h1 {
   color: #555;
   font-size: 0.75rem;
   letter-spacing: 0.5px;
-  max-width: 400px;
+  max-width: 600px;
 }
 .footer-line {
   margin-bottom: 0.5rem;
@@ -85,6 +85,41 @@ h1 {
 .footer a:hover {
   color: #888;
 }
+.legal-toggle {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid #333;
+  color: #666;
+  cursor: pointer;
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+}
+.legal-toggle:hover {
+  color: #888;
+  border-color: #444;
+}
+.legal-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin-top: 0.75rem;
+}
+.legal-content.active {
+  max-height: 500px;
+}
+.legal-content p {
+  margin-bottom: 1rem;
+  color: #555;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  text-align: left;
+  padding: 0 1rem;
+}
+.legal-content p:last-child {
+  margin-bottom: 0;
+}
 </style>
 </head>
 <body>
@@ -101,7 +136,26 @@ h1 {
       <a href="privacy.html">Privacy</a>
       <a href="updatelog.html">Update Log</a>
     </div>
+    <button class="legal-toggle" onclick="toggleLegal()">Legal Notice ▼</button>
+    <div class="legal-content" id="legalContent">
+      <p>본 홈페이지는 개인이 운영하는 사이트로, 서비스 이용에 제한이 있을 수 있습니다.
+홈페이지 내 디자인 및 소스코드의 저작권은 EY.K에게 있으며, 기타 자료의 저작권은 각 과목 담당 교사 또는 출제자에게 귀속됩니다.
+무단 복제·배포 시 대한민국의 「저작권법」 제136조 및 관련 법령에 따라 처벌받을 수 있습니다.</p>
+      <p>This website is operated by an individual, and there may be limitations on service availability.
+The copyright for the design and source code on this website belongs to EY.K, and the copyright for other materials belongs to the respective subject teachers or content creators.
+Unauthorized copying or distribution may be punished in accordance with Article 136 of the Copyright Act and related laws. (In Republic of Korea)</p>
+    </div>
   </div>
   
+  <script>
+    function toggleLegal() {
+      const content = document.getElementById('legalContent');
+      const button = document.querySelector('.legal-toggle');
+      content.classList.toggle('active');
+      button.textContent = content.classList.contains('active') 
+        ? 'Legal Notice ▲' 
+        : 'Legal Notice ▼';
+    }
+  </script>
 </body>
 </html>
