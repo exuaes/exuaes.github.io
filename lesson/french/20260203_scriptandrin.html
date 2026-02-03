@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Présentation - Languedoc-Roussillon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #f5576c;
+        }
+
+        .slide-number {
+            font-size: 14px;
+            color: #f5576c;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .slide-title {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .slide-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .slide-content {
+            line-height: 1.8;
+            font-size: 18px;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .slide-content p {
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-button {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f5576c;
+            color: white;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: #e04357;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .emergency-exit {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #e74c3c;
+            color: white;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .emergency-exit:hover {
+            background: #c0392b;
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-content {
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="slide-header">
+            <div class="slide-icon" id="slideIcon">🎤</div>
+            <div class="slide-number" id="slideNumber">Slide 1 / 7</div>
+            <h1 class="slide-title" id="slideTitle">Introduction</h1>
+        </div>
+
+        <div class="slide-content" id="slideContent">
+            <p>Aujourd'hui, je vais vous présenter le Languedoc-Roussillon.</p>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevButton" onclick="previousSlide()">← Précédent</button>
+            <button class="nav-button" id="nextButton" onclick="nextSlide()">Suivant →</button>
+        </div>
+
+        <button class="emergency-exit" onclick="emergencyExit()">🚨 SORTIE D'URGENCE 🚨</button>
+    </div>
+
+    <script>
+        const slides = [
+            {
+                icon: '🎤',
+                title: 'Introduction',
+                content: [
+                    "Aujourd'hui, je vais vous présenter le Languedoc-Roussillon."
+                ]
+            },
+            {
+                icon: '🏛️',
+                title: 'La région',
+                content: [
+                    "Le Languedoc-Roussillon est une ancienne région du sud de la France. Elle est située entre la mer Méditerranée et les montagnes.",
+                    "Depuis 2016, elle fait partie de la région Occitanie.",
+                    "La région est connue pour son climat chaud et ensoleillé. La capitale historique du Languedoc-Roussillon est Montpellier.",
+                    "Pour mieux comprendre cette région, regardons maintenant sa situation géographique."
+                ]
+            },
+            {
+                icon: '🗺️',
+                title: 'Situation géographique',
+                content: [
+                    "Sur cette carte, on peut voir où se trouve le Languedoc-Roussillon.",
+                    "La région est située au sud de la France, près de la frontière espagnole. Elle possède une longue côte le long de la mer Méditerranée.",
+                    "Grâce à cette situation, la région est très attractive pour le tourisme.",
+                    "Après avoir vu la situation géographique, je vais maintenant parler des particularités de la région."
+                ]
+            },
+            {
+                icon: '🌄',
+                title: 'Particularités',
+                content: [
+                    "Le Languedoc-Roussillon est une région très variée.",
+                    "Les paysages sont divers : la mer, les plages, les plaines et les montagnes.",
+                    "La région joue aussi un rôle important dans la production de vin. On y trouve la garrigue, avec des plantes sèches et aromatiques.",
+                    "Après ces informations générales, je vais maintenant vous présenter une ville importante."
+                ]
+            },
+            {
+                icon: '🏙️',
+                title: 'Montpellier',
+                content: [
+                    "Montpellier est une ville moderne et très jeune. Elle est connue pour sa grande population étudiante.",
+                    "Le centre-ville est très animé, surtout autour de la Place de la Comédie. Il y a beaucoup de cafés, de commerces et d'événements culturels.",
+                    "De plus, la ville est proche de la mer et des plages.",
+                    "Mais une région, ce n'est pas seulement des villes et des paysages, c'est aussi la gastronomie."
+                ]
+            },
+            {
+                icon: '🍽️',
+                title: 'Une spécialité',
+                content: [
+                    "Un plat typique du Languedoc-Roussillon est le cassoulet. C'est un plat traditionnel avec des haricots blancs, de la saucisse et de la viande.",
+                    "Une spécialité de la mer est les huîtres de Bouzigues, qui viennent de l'étang de Thau.",
+                    "Une curiosité très connue est la cité médiévale de Carcassonne : une grande ville fortifiée avec des murs et des tours, très touristique."
+                ]
+            },
+            {
+                icon: '✅',
+                title: 'Conclusion',
+                content: [
+                    "Pour conclure, le Languedoc-Roussillon est une région très attractive.",
+                    "Elle est appréciée pour sa bonne cuisine, ses paysages variés et son offre culturelle.",
+                    "Grâce à son climat, à sa nature et à sa culture, c'est une région idéale pour les vacances et pour vivre."
+                ]
+            }
+        ];
+
+        let currentSlide = 0;
+
+        function updateSlide() {
+            const slide = slides[currentSlide];
+            
+            document.getElementById('slideIcon').textContent = slide.icon;
+            document.getElementById('slideNumber').textContent = `Slide ${currentSlide + 1} / ${slides.length}`;
+            document.getElementById('slideTitle').textContent = slide.title;
+            
+            const contentHtml = slide.content.map(p => `<p>${p}</p>`).join('');
+            document.getElementById('slideContent').innerHTML = contentHtml;
+            
+            document.getElementById('prevButton').disabled = currentSlide === 0;
+            document.getElementById('nextButton').disabled = currentSlide === slides.length - 1;
+            
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function emergencyExit() {
+            window.location.href = 'https://www.google.com';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (event.key === 'Escape') {
+                emergencyExit();
+            }
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>
