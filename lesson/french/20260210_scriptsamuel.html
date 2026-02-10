@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Présentation - Nord-Pas-de-Calais</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #4facfe;
+        }
+
+        .slide-number {
+            font-size: 14px;
+            color: #4facfe;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .slide-title {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .slide-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .slide-content {
+            line-height: 1.8;
+            font-size: 18px;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .slide-content p {
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-button {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #4facfe;
+            color: white;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: #3a8cd9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .emergency-exit {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #e74c3c;
+            color: white;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .emergency-exit:hover {
+            background: #c0392b;
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-content {
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="slide-header">
+            <div class="slide-icon" id="slideIcon">🎤</div>
+            <div class="slide-number" id="slideNumber">Slide 1 / 9</div>
+            <h1 class="slide-title" id="slideTitle">Introduction</h1>
+        </div>
+
+        <div class="slide-content" id="slideContent">
+            <p>Bonjour. Aujourd'hui, je vais vous présenter la région Nord-Pas-de-Calais.</p>
+            <p>C'est une région du nord de la France, souvent connue pour son industrie.</p>
+            <p>Je vais surtout parler de son image, de son passé industriel et de la vie quotidienne.</p>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevButton" onclick="previousSlide()">← Précédent</button>
+            <button class="nav-button" id="nextButton" onclick="nextSlide()">Suivant →</button>
+        </div>
+
+        <button class="emergency-exit" onclick="emergencyExit()">🚨 SORTIE D'URGENCE 🚨</button>
+    </div>
+
+    <script>
+        const slides = [
+            {
+                icon: '🎤',
+                title: 'Introduction',
+                content: [
+                    "Bonjour. Aujourd'hui, je vais vous présenter la région Nord-Pas-de-Calais.",
+                    "C'est une région du nord de la France, souvent connue pour son industrie.",
+                    "Je vais surtout parler de son image, de son passé industriel et de la vie quotidienne."
+                ]
+            },
+            {
+                icon: '🗺️',
+                title: 'Localisation',
+                content: [
+                    "La région Nord-Pas-de-Calais se situe dans le nord de la France.",
+                    "Elle est proche de la Belgique et de la mer du Nord.",
+                    "La situation géographique a joué un rôle important pour l'industrie et le commerce."
+                ]
+            },
+            {
+                icon: '🏭',
+                title: 'Image de la région',
+                content: [
+                    "Le Nord-Pas-de-Calais est souvent vu comme une région industrielle.",
+                    "Beaucoup de personnes pensent d'abord aux usines et aux mines.",
+                    "Cette image vient de son histoire industrielle très forte."
+                ]
+            },
+            {
+                icon: '⚙️',
+                title: 'Passé industriel',
+                content: [
+                    "Pendant longtemps, l'industrie était très importante dans la région.",
+                    "Les mines de charbon et les usines donnaient du travail à beaucoup de gens.",
+                    "Mais le travail était souvent difficile.",
+                    "Quand les mines ont fermé, il y a eu du chômage et des problèmes économiques."
+                ]
+            },
+            {
+                icon: '🏙️',
+                title: 'Villes importantes',
+                content: [
+                    "Lille est la ville la plus importante de la région.",
+                    "C'est un centre économique et universitaire.",
+                    "D'autres villes comme Calais ou Lens ont aussi une histoire industrielle.",
+                    "Ces villes montrent bien le passé de la région."
+                ]
+            },
+            {
+                icon: '👥',
+                title: 'Vie quotidienne',
+                content: [
+                    "Les habitants du Nord-Pas-de-Calais sont souvent décrits comme solidaires.",
+                    "Ils sont habitués au travail dur.",
+                    "La vie quotidienne est plutôt simple et populaire.",
+                    "La région est moins touristique que d'autres régions françaises."
+                ]
+            },
+            {
+                icon: '💬',
+                title: 'Le ch\'ti',
+                content: [
+                    "Dans le Nord-Pas-de-Calais, on parle aussi le ch'ti.",
+                    "Le ch'ti est un dialecte régional.",
+                    "Il fait partie de l'identité locale.",
+                    "Aujourd'hui, il est moins parlé, mais il reste important pour la culture."
+                ]
+            },
+            {
+                icon: '🍽️',
+                title: 'Gastronomie',
+                content: [
+                    "La cuisine de la région est simple et nourrissante.",
+                    "Des plats typiques sont par exemple le welsh ou les moules-frites.",
+                    "Cette cuisine correspond bien à une région ouvrière."
+                ]
+            },
+            {
+                icon: '✅',
+                title: 'Conclusion',
+                content: [
+                    "Aujourd'hui, le Nord-Pas-de-Calais essaie de changer son image.",
+                    "La région se modernise, mais le passé industriel est toujours visible.",
+                    "Pour conclure, c'est une région industrielle avec une forte identité.",
+                    "Merci de m'avoir écouté."
+                ]
+            }
+        ];
+
+        let currentSlide = 0;
+
+        function updateSlide() {
+            const slide = slides[currentSlide];
+            
+            document.getElementById('slideIcon').textContent = slide.icon;
+            document.getElementById('slideNumber').textContent = `Slide ${currentSlide + 1} / ${slides.length}`;
+            document.getElementById('slideTitle').textContent = slide.title;
+            
+            const contentHtml = slide.content.map(p => `<p>${p}</p>`).join('');
+            document.getElementById('slideContent').innerHTML = contentHtml;
+            
+            document.getElementById('prevButton').disabled = currentSlide === 0;
+            document.getElementById('nextButton').disabled = currentSlide === slides.length - 1;
+            
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function emergencyExit() {
+            window.location.href = 'https://www.google.com';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (event.key === 'Escape') {
+                emergencyExit();
+            }
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>
