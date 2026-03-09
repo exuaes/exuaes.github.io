@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Writing – Exam Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f13;
+    --surface: #17171e;
+    --border: #2a2a36;
+    --accent: #c8a96e;
+    --accent2: #6e9ec8;
+    --accent3: #c86e9e;
+    --accent4: #6ec8a4;
+    --text: #e8e8f0;
+    --muted: #7a7a90;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  header {
+    padding: 60px 40px 40px;
+    border-bottom: 1px solid var(--border);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  header .tag {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1;
+    color: #fff;
+  }
+
+  header p {
+    color: var(--muted);
+    margin-top: 12px;
+    font-size: 15px;
+  }
+
+  .nav {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 24px 40px;
+    max-width: 900px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav a {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .nav a:hover { color: var(--text); border-color: var(--accent); }
+
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 40px 80px;
+  }
+
+  .format-block {
+    margin-bottom: 64px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .format-header {
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .format-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .format-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: #fff;
+  }
+
+  .format-header .sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .col1 { background: rgba(200,169,110,0.08); }
+  .col1 .format-num { background: rgba(200,169,110,0.2); color: var(--accent); }
+  .col2 { background: rgba(110,158,200,0.08); }
+  .col2 .format-num { background: rgba(110,158,200,0.2); color: var(--accent2); }
+  .col3 { background: rgba(200,110,158,0.08); }
+  .col3 .format-num { background: rgba(200,110,158,0.2); color: var(--accent3); }
+  .col4 { background: rgba(110,200,164,0.08); }
+  .col4 .format-num { background: rgba(110,200,164,0.2); color: var(--accent4); }
+
+  .format-body {
+    padding: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 640px) { .format-body { grid-template-columns: 1fr; } .nav, header, main { padding-left: 20px; padding-right: 20px; } }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .card h3 {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+
+  .structure-step {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    font-size: 11px;
+    font-weight: 600;
+    min-width: 20px;
+    padding-top: 2px;
+    color: var(--muted);
+  }
+
+  .step-text strong {
+    font-weight: 600;
+    display: block;
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  .step-text span {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .phrase-list {
+    list-style: none;
+  }
+
+  .phrase-list li {
+    font-size: 13px;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.03);
+    border-left: 2px solid var(--border);
+    color: var(--text);
+  }
+
+  .prompt-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+
+  .model-answer {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.8;
+    white-space: pre-line;
+  }
+
+  .full-width { grid-column: 1 / -1; }
+
+  .tip {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .tip strong { color: var(--accent); }
+
+  .word-count {
+    display: inline-block;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: rgba(200,169,110,0.15);
+    color: var(--accent);
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  .general-tips {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-top: 0;
+  }
+
+  .general-tips h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+
+  .tips-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 640px) { .tips-grid { grid-template-columns: 1fr; } }
+
+  .tip-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 13px;
+  }
+
+  .tip-card strong {
+    display: block;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">SEK I · Gymnasium · 2026 · B1</div>
+  <h1>English Writing<br>Exam Prep</h1>
+  <p>Structure · Vocabulary · Model Answers · ~200–250 words</p>
+</header>
+
+<nav class="nav">
+  <a href="#article">Article / Blog</a>
+  <a href="#email">Email / Letter</a>
+  <a href="#comment">Comment / Speech</a>
+  <a href="#review">Review / Report</a>
+  <a href="#tips">General Tips</a>
+</nav>
+
+<main>
+
+  <!-- ARTICLE / BLOG POST -->
+  <div class="format-block col1" id="article">
+    <div class="format-header">
+      <div class="format-num">1</div>
+      <div>
+        <h2>Article / Blog Post</h2>
+        <div class="sub">Informative or opinion-based · Semi-formal tone</div>
+      </div>
+    </div>
+    <div class="format-body">
+      <div class="card">
+        <h3>Structure</h3>
+        <div class="structure-step">
+          <span class="step-num">①</span>
+          <div class="step-text"><strong>Headline + Hook</strong><span>Catchy title + opening question or surprising fact</span></div>
+        </div>
+        <div class="structure-step">
+          <span class="step-num">②</span>
+          <div class="step-text"><strong>Introduction</strong><span>State the topic and why it matters</span></div>
+        </div>
+        <div class="structure-step">
+          <span class="step-num">③</span>
+          <div class="step-text"><strong>Main Body (2 paragraphs)</strong><span>Point + explanation + example per paragraph</span></div>
+        </div>
+        <div class="structure-step">
+          <span class="step-num">④</span>
+          <div class="step-text"><strong>Conclusion</strong><span>Summary + your opinion or call to action</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Useful Phrases</h3>
+        <ul class="phrase-list">
+          <li>Have you ever wondered why…?</li>
+          <li>According to recent studies, …</li>
+          <li>One of the main reasons is that…</li>
+          <li>On the other hand, …</li>
+          <li>It is worth pointing out that…</li>
+          <li>In conclusion, it seems clear that…</li>
+          <li>What do you think? Let us know in the comments!</li>
+        </ul>
+      </div>
+
+      <div class="card full-width">
+        <h3>Practice Prompt</h3>
+        <div class="prompt-box">Write an article for your school magazine about whether teenagers spend too much time on social media. Give your opinion and reasons. (~200–250 words)</div>
+        <div class="word-count">Model Answer · ~220 words</div>
+        <div class="model-answer"><strong>Are We Addicted to Our Phones?</strong>
+
+Have you ever sat down for dinner only to realize everyone at the table is staring at their screen? Social media has become a huge part of teenage life – but is that really a problem?
+
+On one hand, platforms like Instagram and TikTok help young people stay connected with friends, discover new interests, and even learn things in creative ways. Many teenagers use these apps to share their art, music, or opinions with the world. That is genuinely valuable.
+
+However, there is a downside too. Studies show that teenagers who spend more than three hours a day on social media are more likely to feel anxious or lonely. Scrolling through perfectly edited photos can make people feel like their own lives are not good enough. Moreover, time spent online is often time not spent sleeping, exercising, or talking face-to-face.
+
+In my opinion, social media itself is not the enemy – it is how we use it. Setting limits, such as no phones after 10 pm or during meals, can make a real difference. Schools could also help by teaching digital literacy.
+
+So yes, many of us probably spend too much time online. But with a little self-awareness, we can enjoy the benefits without losing ourselves in the scroll.
+
+What do you think? Are you in control of your screen time?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMAIL / LETTER -->
+  <div class="format-block col2" id="email">
+    <div class="format-header">
+      <div class="format-num">2</div>
+      <div>
+        <h2>Email / Letter</h2>
+        <div class="sub">Formal or informal · Know your audience</div>
+      </div>
+    </div>
+    <div class="format-body">
+      <div class="card">
+        <h3>Structure (Formal)</h3>
+        <div class="structure-step">
+          <span class="step-num">①</span>
+          <div class="step-text"><strong>Salutation</strong><span>Dear Mr/Ms [Name], / Dear Sir or Madam,</span></div>
+        </div>
+        <div class="structure-step">
+          <span class="step-num">②</span>
+          <div class="step-text"><strong>Opening</strong><span>State your reason for writing clearly</span></div>
+        </div>
+        <div class="structure-step">
+          <span class="step-num">③</span>
+          <div class="step-text"><strong>Main Body</strong><span>Details, request, or explanation (2 paragraphs)</span></div>
+        </div>
+        <div class="structure-step">
+          <span class="step-num">④</span>
+          <div class="step-text"><strong>Closing</strong><span>Thank them + next step + "Yours sincerely,"</span></div>
+        </div>
+        <div class="tip"><strong>Informal:</strong> "Hi [Name]!" → casual tone → "Best wishes," or "Take care,"</div>
+      </div>
+
+      <div class="card">
+        <h3>Useful Phrases</h3>
+        <ul class="phrase-list">
+          <li><em>Formal:</em> I am writing to enquire about…</li>
+          <li>I would be grateful if you could…</li>
+          <li>I look forward to hearing from you.</li>
+          <li>Please do not hesitate to contact me.</li>
+          <li><em>Informal:</em> How are you? It's been ages!</li>
+          <li>I just wanted to tell you that…</li>
+          <li>Let me know what you think!</li>
+          <li>Can't wait to hear from you.</li>
+        </ul>
+      </div>
+
+      <div class="card full-width">
+        <h3>Practice Prompt</h3>
+        <div class="prompt-box">Write a formal email to your school principal suggesting that the school should introduce a student garden project. Explain your idea and give reasons. (~200–250 words)</div>
+        <div class="word-count">Model Answer · ~215 words</div>
+        <div class="model-answer">Dear Ms Schmidt,
+
+I am writing to suggest an idea that I believe could benefit our school community greatly: a student garden project on the school grounds.
+
+The idea would be to convert the unused area next to the sports hall into a small vegetable and herb garden. Students from different year groups could take turns caring for it during breaks or in a dedicated weekly slot. The produce could then be used in the school canteen or donated to local families in need.
+
+I think this project would have many advantages. First of all, it would give students a hands-on experience of where food comes from, which connects well to topics we discuss in biology and geography. It would also encourage teamwork and responsibility. Furthermore, spending time outdoors and doing something practical has been shown to reduce stress and improve concentration.
+
+Of course, there would be costs involved, such as tools, seeds, and raised beds. However, I believe we could apply for a small environmental grant or ask local businesses to sponsor the project. Many schools in Germany have done this successfully.
+
+I would be very happy to discuss this idea further and even help organise a small planning group of interested students.
+
+Thank you very much for taking the time to read this email. I look forward to hearing your thoughts.
+
+Yours sincerely,
+[Your Name]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMENT / SPEECH -->
+  <div class="format-block col3" id="comment">
+    <div class="format-header">
+      <div class="format-num">3</div>
+      <div>
+        <h2>Comment / Speech</h2>
+        <div class="sub">Opinion-based · Argument + counter-argument</div>
+      </div>
+    </div>
+    <div class="format-body">
+      <div class="card">
+        <h3>Structure (Comment)</h3>
+        <div class="structure-step">
+          <span class="step-num">①</span>
+          <div class="step-text"><strong>State your position</strong><span>Clearly say what you think from the start</span></div>
+        </div>
+        <div class="structure-step">
+          <span class="step-num">②</span>
+          <div class="step-text"><strong>Arguments (2–3)</strong><span>Each: claim → reason → example</span></div>
+        </div>
+        <div class="structure-step">
+          <span class="step-num">③</span>
+          <div class="step-text"><strong>Counter-argument</strong><span>Acknowledge the other side, then refute it</span></div>
+        </div>
+        <div class="structure-step">
+          <span class="step-num">④</span>
+          <div class="step-text"><strong>Conclusion</strong><span>Restate your opinion strongly</span></div>
+        </div>
+        <div class="tip"><strong>Speech:</strong> Add "Ladies and gentlemen," opener + speak directly to audience</div>
+      </div>
+
+      <div class="card">
+        <h3>Useful Phrases</h3>
+        <ul class="phrase-list">
+          <li>In my opinion, / I strongly believe that…</li>
+          <li>First and foremost, …</li>
+          <li>Another important point is that…</li>
+          <li>Admittedly, some people argue that…</li>
+          <li>However, this argument ignores the fact that…</li>
+          <li>All things considered, …</li>
+          <li>It is high time that we… (speech)</li>
+          <li>Thank you for listening. (speech)</li>
+        </ul>
+      </div>
+
+      <div class="card full-width">
+        <h3>Practice Prompt</h3>
+        <div class="prompt-box">Write a comment on the following statement: "School uniforms should be compulsory in all schools." Do you agree or disagree? Give reasons. (~200–250 words)</div>
+        <div class="word-count">Model Answer · ~225 words</div>
+        <div class="model-answer">Should all students be forced to wear uniforms? In my opinion, making school uniforms compulsory would do more harm than good.
+
+First and foremost, clothing is one of the few ways teenagers can express their personality. At a time when young people are figuring out who they are, being able to choose what they wear helps build confidence and individuality. Forcing everyone into the same outfit takes that away.
+
+Another important point is that uniforms do not actually solve the problems they are meant to address. Bullying, for example, does not disappear just because everyone wears the same clothes – it simply finds other outlets, such as shoes, hairstyles, or accessories. The idea that uniforms create equality is therefore somewhat misleading.
+
+Admittedly, some people argue that uniforms reduce pressure on families who cannot afford the latest fashion trends. This is a valid concern. However, a simpler solution would be to have a relaxed dress code rather than a strict uniform, allowing flexibility while still keeping things affordable and appropriate.
+
+All things considered, I believe that schools should focus on creating a positive and respectful environment through good teaching and strong values – not through what students wear. Personal freedom matters, and it starts with small choices like getting dressed in the morning.
+
+Schools should trust their students to dress appropriately and focus on what really counts: learning.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW / REPORT -->
+  <div class="format-block col4" id="review">
+    <div class="format-header">
+      <div class="format-num">4</div>
+      <div>
+        <h2>Review / Report</h2>
+        <div class="sub">Review = evaluate · Report = inform + recommend</div>
+      </div>
+    </div>
+    <div class="format-body">
+      <div class="card">
+        <h3>Structure (Review)</h3>
+        <div class="structure-step">
+          <span class="step-num">①</span>
+          <div class="step-text"><strong>Introduction</strong><span>What are you reviewing? Brief context</span></div>
+        </div>
+        <div class="structure-step">
+          <span class="step-num">②</span>
+          <div class="step-text"><strong>Positives</strong><span>What worked well and why</span></div>
+        </div>
+        <div class="structure-step">
+          <span class="step-num">③</span>
+          <div class="step-text"><strong>Negatives</strong><span>What could be improved</span></div>
+        </div>
+        <div class="structure-step">
+          <span class="step-num">④</span>
+          <div class="step-text"><strong>Recommendation</strong><span>Would you recommend it? To whom?</span></div>
+        </div>
+        <div class="tip"><strong>Report:</strong> Use headings (Introduction / Findings / Recommendation) + neutral, factual tone</div>
+      </div>
+
+      <div class="card">
+        <h3>Useful Phrases</h3>
+        <ul class="phrase-list">
+          <li><em>Review:</em> Overall, I would highly recommend…</li>
+          <li>One of the highlights was definitely…</li>
+          <li>On the downside, …</li>
+          <li>Despite its flaws, … is well worth…</li>
+          <li>I would give it ★★★★ out of five.</li>
+          <li><em>Report:</em> The aim of this report is to…</li>
+          <li>The findings suggest that…</li>
+          <li>Based on the results, I recommend that…</li>
+        </ul>
+      </div>
+
+      <div class="card full-width">
+        <h3>Practice Prompt</h3>
+        <div class="prompt-box">Write a review of a film, book, or event you recently experienced. Describe it, evaluate it, and say whether you would recommend it. (~200–250 words)</div>
+        <div class="word-count">Model Answer · ~230 words</div>
+        <div class="model-answer"><strong>Review: "The Martian" (Film)</strong>
+
+"The Martian" is a 2015 science fiction film directed by Ridley Scott, starring Matt Damon as astronaut Mark Watney, who is accidentally left behind on Mars and must survive alone until a rescue mission can reach him.
+
+One of the highlights of the film is undoubtedly its tone. Despite the terrifying premise, the story is surprisingly funny and uplifting. Mark Watney's optimism and problem-solving mindset make him a genuinely likeable character, and watching him "science the heck out of" every problem is both entertaining and inspiring. The visuals are stunning, with wide shots of the Martian landscape creating a real sense of isolation and scale.
+
+On the downside, some of the science has been simplified for dramatic effect, which may frustrate viewers with a strong interest in physics or chemistry. A few subplots involving NASA and the media also feel a little rushed and could have been developed more fully.
+
+Overall, however, "The Martian" is an engaging and feel-good film that manages to make space exploration genuinely exciting. It is suitable for teenagers and adults alike, and it might even spark an interest in science.
+
+I would give it four out of five stars and highly recommend it – especially to anyone who enjoys problem-solving stories or simply wants a film that leaves them feeling good about human ingenuity.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERAL TIPS -->
+  <div class="general-tips" id="tips">
+    <h2>General Writing Tips</h2>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <strong>📝 Word Count</strong>
+        Aim for 200–250 words. Under 180 is too short. Over 280 wastes time and loses focus.
+      </div>
+      <div class="tip-card">
+        <strong>🎯 Address the task</strong>
+        Always re-read the prompt. Make sure you answer every part of the question before you finish.
+      </div>
+      <div class="tip-card">
+        <strong>🔗 Connectors</strong>
+        Use linking words: <em>however, furthermore, on the other hand, therefore, as a result, in addition, admittedly, nevertheless.</em>
+      </div>
+      <div class="tip-card">
+        <strong>✅ Check tone</strong>
+        Formal = no contractions (don't → do not). Informal = natural and friendly. Always match the audience.
+      </div>
+      <div class="tip-card">
+        <strong>📐 Paragraph structure</strong>
+        Every paragraph = one main idea. Topic sentence → development → example or reason. Never mix two ideas in one paragraph.
+      </div>
+      <div class="tip-card">
+        <strong>⏱ Time management</strong>
+        Spend ~5 min planning, ~20 min writing, ~5 min checking. Fixing grammar errors at the end is worth it.
+      </div>
+      <div class="tip-card">
+        <strong>💡 Vocabulary variety</strong>
+        Avoid repeating the same word. Use synonyms: <em>good → excellent / beneficial / valuable</em> · <em>bad → harmful / problematic / concerning.</em>
+      </div>
+      <div class="tip-card">
+        <strong>🗂 Dictionary use</strong>
+        A dictionary IS allowed. Use it to check spelling or find a better word – not to translate whole sentences.
+      </div>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>
