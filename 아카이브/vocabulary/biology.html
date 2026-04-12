@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="icon" href="favicon.png" type="image/x-icon">
+  <title>Vocabulary Finder - Biology</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background: #0a0a0a;
+      color: #ddd;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #333;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 1px;
+      color: #888;
+      margin-bottom: 0.5rem;
+    }
+
+    .meta {
+      font-size: 0.75rem;
+      color: #555;
+    }
+
+    /* Search */
+    .search-section {
+      margin-bottom: 2rem;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #ddd;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #444;
+    }
+
+    button, select {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #ddd;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    button:hover, select:hover {
+      background: #252525;
+      border-color: #444;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .suggestions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #aaa;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .pill:hover {
+      border-color: #444;
+    }
+
+    /* Table */
+    .table-wrapper {
+      border: 1px solid #333;
+      overflow-x: auto;
+      margin-bottom: 2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #333;
+    }
+
+    th {
+      background: #151515;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      font-size: 0.9rem;
+    }
+
+    tr:hover td {
+      background: #151515;
+    }
+
+    .topic { color: #888; font-size: 0.85rem; }
+    .word { font-weight: 600; }
+
+    mark {
+      background: #ffd700;
+      color: #000;
+      padding: 0 2px;
+    }
+
+    /* Cards (Mobile) */
+    .cards {
+      display: none;
+    }
+
+    .card {
+      background: #151515;
+      border: 1px solid #333;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-topic {
+      font-size: 0.75rem;
+      color: #888;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-word {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-meaning {
+      margin-bottom: 0.75rem;
+      color: #bbb;
+    }
+
+    .card-example {
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    /* Add Section */
+    .add-section {
+      background: #151515;
+      border: 1px solid #333;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .add-section h3 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: #aaa;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .form-row input {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .form-row button {
+      white-space: nowrap;
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: #555;
+      font-size: 0.8rem;
+      border-top: 1px solid #333;
+    }
+
+    .count {
+      color: #888;
+      font-weight: 600;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .table-wrapper { display: none; }
+      .cards { display: block; }
+      .form-row { flex-direction: column; }
+      .form-row input { min-width: auto; width: 100%; }
+      h1 { font-size: 1.25rem; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 1rem 0.5rem; }
+      .search-bar { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Biology Vocabulary</h1>
+      <div class="meta">Designed by EY • Last Update: 2026.02.02</div>
+    </header>
+
+    <div class="search-section">
+      <div class="search-bar">
+        <input type="text" id="q" placeholder="Suche nach Thema, Wort, Bedeutung oder Beispiel..." />
+        <button id="clear">Clear</button>
+        <select id="mode">
+          <option value="contains">Contains</option>
+          <option value="starts">Starts with</option>
+        </select>
+      </div>
+      <div id="suggest" class="suggestions"></div>
+    </div>
+
+    <!-- Desktop table -->
+    <div class="table-wrapper">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th style="width:18%">Thema</th>
+            <th style="width:22%">Wort / Ausdruck</th>
+            <th>Bedeutung</th>
+            <th style="width:28%">Beispiel</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Mobile cards -->
+    <div class="cards" id="cards"></div>
+
+    <!-- Add/Import Section -->
+    <div class="add-section">
+      <h3>Vokabular hinzufügen</h3>
+      <div class="form-row">
+        <input type="text" id="topic" placeholder="Thema (optional)" />
+        <input type="text" id="word" placeholder="Wort / Ausdruck" />
+      </div>
+      <div class="form-row">
+        <input type="text" id="meaning" placeholder="Bedeutung" />
+      </div>
+      <div class="form-row">
+        <input type="text" id="example" placeholder="Beispiel" />
+      </div>
+      <div class="form-row">
+        <button id="addBtn">Add</button>
+        <button id="exportBtn">Export JSON</button>
+        <label style="display:inline-block">
+          <input type="file" id="file" accept=".json,.csv,.tsv" style="display:none" />
+          <button type="button" onclick="document.getElementById('file').click()">Import</button>
+        </label>
+      </div>
+      <div class="hint">CSV/TSV format: thema, wort, bedeutung, beispiel</div>
+    </div>
+
+    <footer>
+      <div>Total: <span id="count" class="count">0</span> items • Saved in LocalStorage</div>
+    </footer>
+  </div>
+
+<script>
+// Utilities
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+const norm = s => (s||"").toLowerCase().normalize("NFKD").replace(/\p{Diacritic}/gu,"");
+
+function highlight(text, q){
+  if(!q) return text;
+  const t = String(text);
+  const nt = norm(t), nq = norm(q);
+  const i = nt.indexOf(nq);
+  if(i<0) return t;
+  return t.slice(0,i) + '<mark>' + t.slice(i,i+q.length) + '</mark>' + t.slice(i+q.length);
+}
+
+function debounce(fn, ms){ 
+  let t; 
+  return (...a)=>{ 
+    clearTimeout(t); 
+    t=setTimeout(()=>fn(...a), ms); 
+  } 
+}
+
+// Seed data
+let DATA = [
+  {topic:"Zellkern und Chromosomen", word:"Chromosomen", meaning:"Traeger der Erbinformation (Gene).", example:"Der Mensch hat 46 Chromosomen."},
+  {topic:"Zellkern und Chromosomen", word:"Autosomen", meaning:"Alle Chromosomen ausser die Geschlechtschromosomen.", example:"44 von 46 Chromosomen sind Autosomen."},
+  {topic:"Zellkern und Chromosomen", word:"Gonosomen", meaning:"Geschlechtschromosomen (X und Y).", example:"Frauen haben XX und Maenner haben XY Gonosomen."},
+  {topic:"Zellkern und Chromosomen", word:"diploid", meaning:"Doppelter Chromosomensatz (2n).", example:"Koerperzellen sind dipoloid (46 Chromosomen)."},
+  {topic:"Zellkern und Chromosomen", word:"hapliod", meaning:"Einfacher Chromosomensatz (n).", example:"Eizellen und Spermien sind hapliod (23)."},
+  {topic:"nan", word:"nan", meaning:"nan", example:"nan"},
+  {topic:"Genetik", word:"Erbinformationen ", meaning:"Gesamtheit der genetischen Information, die in der DNA gespeichert ist.", example:"Augenfarbe wird durch Gene bestimmt."},
+  {topic:"Genetik", word:"Zygote", meaning:"Erste Zelle, die nach der Verschmelzung von Ei- und Samenzelle entsteht.", example:"Befruchtete Eizelle beim Menschen."},
+  {topic:"Genetik", word:"Eukaryoten", meaning:"Lebewesen mit Zellkern und Organellen.", example:"Pflanzen, Tiere, Pilze."},
+  {topic:"Genetik", word:"Prokaryoten", meaning:"Lebewesen ohne Zellkern, DNA liegt frei im Zellplasma.", example:"Bakterien."},
+  {topic:"Genetik", word:"Genom", meaning:"Gesamtheit aller Gene eines Organismus.", example:"Menschliches Genom enthält ca. 20.000 Gene."},
+  {topic:"Klonen", word:"Kerntransfer", meaning:"Übertragung eines Zellkerns in eine entkernte Eizelle", example:"Beim Klonschaf Dolly wurde der Kerntransfer benutzt."},
+  {topic:"Klonen", word:"Erbgut", meaning:"Gesamtheit der Gene eines Organismus", example:"Das Erbgut bestimmt die Eigenschaften eines Lebewesens."},
+  {topic:"Klonen", word:"Embryo", meaning:"Frühes Entwicklungsstadium eines Lebewesens", example:"Der Embryo wächst im Körper der Leihmutter."},
+  {topic:"Klonen", word:"Leihmutter", meaning:"Ein Tier oder Mensch, das einen Embryo austrägt", example:"Dolly wurde in einer Leihmutter geboren."},
+  {topic:"Klonen", word:"Klon", meaning:"Genetisch identische Kopie eines Organismus", example:"Dolly war ein Klon eines Schafes der Rasse Finn Dorset."},
+  {topic:"Zellkern und Chromosomen", word:"Erythrozyten", meaning:"Erythrozyten sind rote Blutzellen ohne Zellkern. Sie enthalten den roten Blutfarbstoff Hämoglobin, der Sauerstoff binden und im Körper transportieren kann.", example:"Erythrozyten transportieren den Sauerstoff von der Lunge zu den Muskeln."},
+  {topic:"nan", word:"homologe Chromosomen ", meaning:"Homologe Chromosomen sind zwei Chromosomen, die gleich aussehen und die gleichen Gene an den gleichen Stellen tragen - eines kommt von der Mutter, das andere vom Vater. ", example:"Beide enthalten das Gen für Augenfarbe, aber die Variante (z. B. braun oder blau) kann unterschiedlich sein."},
+  {topic:"Klonen", word:"Kultivierung", meaning:"Künstliches Vermehren und Wachsenlassen von Zellen oder Geweben im Labor.", example:"Hautzellen können im Labor kultiviert werden."},
+  {topic:"Klonen", word:"Fusion ", meaning:"Verschmelzung von zwei Zellen zu einer gemeinsamen Zelle.", example:"Beim Klonen verschmilzt die entkernte Eizelle mit der Spenderzelle."},
+  {topic:"Klonen", word:"Kombinationsversuch ", meaning:"Experiment, bei dem verschiedene Teile von Organismen oder Zellen zusammengefügt werden, um ihre Funktion zu testen.", example:"Beim Klonen verschmilzt die entkernte Eizelle mit der Spenderzelle."},
+  {topic:"Genetik", word:"Meiose", meaning:"Meiose ist eine spezielle Form der Zellteilung, bei der Geschlechtszellen (Eizellen und Spermien) entstehen. Dabei wird der Chromosomensatz halbiert.", example:"Durch die Meiose entstehen Keimzellen mit nur der Hälfte der Chromosomen."},
+  {topic:"Genetik", word:"Mitose", meaning:"Mitose ist eine Form der Zellteilung, bei der aus einer Zelle zwei genetisch identische Tochterzellen entstehen.", example:"Bei der Mitose entstehen zwei identische Körperzellen."},
+  {topic:"Genetik", word:"Äquatorialebene", meaning:"Die Äquatorialebene ist die gedachte Mitte einer Zelle, wo sich die Chromosomen während der Zellteilung (Mitose oder Meiose) anordnen.", example:"In der Metaphase ordnen sich die Chromosomen in der Äquatorialebene der Zelle an."},
+  {topic:"Genetik", word:"Spindelapparat", meaning:"Der Spindelapparat ist ein Gerüst aus Proteinfasern (Mikrotubuli), das sich bei der Zellteilung bildet. Er zieht die Chromosomen auseinander, damit jede Tochterzelle das richtige Erbgut bekommt.", example:"Der Spindelapparat sorgt dafür, dass die Chromosomen bei der Mitose gleichmäßig verteilt werden."},
+  {topic:"Genetik", word:"Crossing-over", meaning:"Crossing-over ist ein Vorgang während der Meiose, bei dem sich Stücke von väterlichen und mütterlichen Chromosomen austauschen. Dadurch entstehen neue Kombinationen von Erbanlagen ? mehr genetische Vielfalt.", example:"Beim Crossing-over tauschen Chromosomenstücke ihre Gene aus, sodass neue Merkmalskombinationen entstehen"},
+  {topic:"Genetik", word:"Interphase", meaning:"Phase des Zellzyklus, in der die Zelle wächst und ihre DNA verdoppelt.", example:"In der Interphase bereitet sich die Zelle auf die Zellteilung vor, indem sie ihr Erbgut verdoppelt."},
+  {topic:"Genetik", word:"Prophase", meaning:"Erste Phase der Mitose, in der die Chromosomen sichtbar werden und sich die Kernhülle auflöst.", example:"Während der Prophase verdichten sich die Chromosomen und werden unter dem Mikroskop erkennbar."},
+  {topic:"Genetik", word:"Anaphase", meaning:"Phase der Mitose, in der die Chromatiden voneinander getrennt und zu den Zellpolen gezogen werden.", example:"In der Anaphase bewegen sich die Schwesterchromatiden zu den entgegengesetzten Polen der Zelle."},
+  {topic:"Genetik", word:"Telophase", meaning:"Letzte Phase der Mitose, in der sich neue Kernhüllen bilden und die Chromosomen entspiralisiert werden.", example:"Während der Telophase entstehen zwei neue Zellkerne."},
+  {topic:"Genetik", word:"Metaphase", meaning:"Phase der Mitose, in der sich die Chromosomen in der Mitte der Zelle anordnen.", example:"In der Metaphase reihen sich die Chromosomen in der Äquatorialebene auf."},
+  {topic:"DNA", word:"DNA", meaning:"DNA (Desoxyribonukleinsäure) ist das Molekül, das unsere Erbinformation trägt. Sie enthält die Bauanleitung für Proteine und damit für alle Lebensprozesse.", example:"Die DNA bestimmt durch ihre Gene unsere Erbinformation."},
+  {topic:"DNA", word:"semikonservative Replikation", meaning:"Die semikonservative Replikation ist die Art, wie DNA kopiert wird: Jeder der beiden neuen DNA-Stränge besteht aus einem alten (Mutter-)Strang und einem neu gebildeten Strang.", example:"Bei der semikonservativen Replikation bleibt jeweils ein alter DNA-Strang erhalten und ein neuer Strang wird ergänzt."},
+  {topic:"DNA", word:"Histone", meaning:"Histone sind Proteine, um die sich die DNA windet, damit sie kompakt in den Zellkern passt. Sie helfen auch, die Gene zu schützen und zu regulieren.", example:"Die DNA wickelt sich um Histone, um im Zellkern Platz zu sparen und gut organisiert zu bleiben."},
+  {topic:"DNA", word:"Arbeitsform der DNA", meaning:"Die Arbeitsform der DNA ist locker und entspannt (Chromatin). Sie liegt so vor, dass Gene abgelesen und Proteine hergestellt werden können.", example:"Im Zellkern liegt die DNA in Arbeitsform vor, damit die Zelle die Gene nutzen kann."},
+  {topic:"DNA", word:"Transportform der DNA", meaning:"Die Transportform der DNA ist stark verdichtet (Chromosomen), damit sie bei der Zellteilung sicher auf die Tochterzellen verteilt werden kann.", example:"Vor der Mitose wird die DNA in Transportform gebracht, damit sie problemlos aufgeteilt werden kann."},
+  {topic:"DNA", word:"Nukleotiden", meaning:"Bausteine der DNA, bestehend aus Zucker, Phosphatgruppe und einer Base.", example:"Die DNA setzt sich aus vielen Nukleotiden zusammen."},
+  {topic:"DNA", word:"Phosphatgruppe", meaning:"Bestandteil der Nukleotide, verbindet die Zuckermoleküle in der DNA-Kette.", example:"Die Phosphatgruppe sorgt für die Stabilität des DNA-Rückgrats."},
+  {topic:"DNA", word:"Desoxyribose", meaning:"Zuckerbaustein der DNA, der an die Phosphatgruppe und eine Base gebunden ist.", example:"In der DNA ist die Desoxyribose der Zucker, der die Nukleotide verbindet."},
+  {topic:"DNA", word:"DNA-Doppelhelix", meaning:"Schraubenförmige Struktur der DNA, bestehend aus zwei Strängen.", example:"Die DNA-Doppelhelix wurde 1953 von Watson und Crick beschrieben."},
+  {topic:"DNA", word:"Schuessel-Schloss-Prinzip", meaning:"Modell, das beschreibt, wie Enzyme nur zu passenden Substraten passen.", example:"Das Enzym arbeitet nach dem Schlüssel-Schloss-Prinzip mit seinem Substrat."},
+  {topic:"DNA", word:"komplementaere Basen", meaning:"Basenpaare in der DNA, bei denen Adenin immer mit Thymin und Guanin mit Cytosin verbunden ist.", example:"In der DNA verbinden sich die komplementären Basen Adenin und Thymin durch Wasserstoffbrücken."},
+  {topic:"DNA", word:"das Gen", meaning:"ein Abschnitt der DNA, beinhaltet die Anleitung zur Bau eines bestimmten Proteins", example:"Ein Gen für Fellfarbe wird von den Eltern an ihre Jungen weitergegeben."},
+  {topic:"DNA", word:"das Genprodukt", meaning:"ein Protein (z. B. Enzym oder Strukturprotein), das durch Transkription und Translation entsteht", example:"Die Fellfarbe des Hundes wird durch das Genprodukt seiner Gene bestimmt."},
+  {topic:"DNA", word:"das Strukturprotein", meaning:"spezielles Protein, das Zellen bzw. Geweben eine bestimmte Form oder Festigkeit geben", example:"Keratin ist ein Strukturprotein, das in Hufen, Nägeln und Haaren vorkommt."},
+  {topic:"DNA", word:"das Enzym", meaning:"ein Protein, das als eine Art Werkzeug EInfluss auf den Ablauf von chemischen Reaktionen in allen Körperzellen hat", example:"Das Enzym Insulin hilft, dass der Blutzuckerspiegel nach dem Essen wieder sinkt."},
+  {topic:"DNA", word:"der codogene Strang", meaning:"der Bereich der DNA, auf dem sich die Bauanleitung für das bestimmte Protein befindet", example:"Während der Transkription wird der codogene Strang der DNA abgelesen, um eine passende mRNA zu bilden."},
+  {topic:"DNA", word:"die Transkription", meaning:" Abschrift oder Übertragung von Informationen von einer Form in eine andere (in unserem Thema : das Ablesen der DNA)", example:"Bei der Transkription wird die DNA in mRNA umgeschrieben."},
+  {topic:"DNA", word:"die Translation", meaning:"Vorgang nach der Translation, indem die Abfolge der mRNA-Tripletts in eine Abfolge von Aminosäuren übersetzt wird", example:"Bei der Translation wird die mRNA in ein Protein übersetzt."},
+  {topic:"DNA", word:"das Basentriplett", meaning:"Abfolge von drei aufeinanderfolgenden Basen (Nukleotiden) auf der mRNA oder DNA, die gemeinsam festlegen, welche Aminosäure eingebaut wird", example:"Ein Basentriplett besteht aus drei Basen und steht für eine Aminosäure."},
+  {topic:"DNA", word:"die mRNA", meaning:"Abschrift eines bestimmten DNA-Abschnitts, die die Information für den Aufbau eines Proteins enthält. Sie entsteht vom codogenen Strang und wird innerhalb der RNA-Polymerase abgelesen.", example:"Die mRNA ist eine Abschrift der DNA und trägt die Bauanleitung für ein Protein."},
+  {topic:"DNA", word:"die tRNA", meaning:"Transportmoleküle, die während der Translation Aminosäuren zu den Ribosomen bringen und sie dort an die richtige Stelle der mRNA anlagern.", example:"Die tRNA bringt die passenden Aminosäuren zum Ribosom."},
+  {topic:"DNA", word:"die Base ", meaning:"Einer der vier „Buchstaben“ der DNA: Adenin (A), Thymin (T), Guanin (G), Cytosin (C).", example:"A passt immer zu T und G passt zu C."},
+  {topic:"DNA", word:"der Doppelhelix", meaning:"Die spiralförmige Struktur der DNA – sieht aus wie eine verdrehte Strickleiter.", example:"Die Doppelhelix sorgt für Stabilität und ermöglicht das Ablesen der Gene."},
+  {topic:"DNA", word:"die Replikation", meaning:"Verdopplung der DNA vor der Zellteilung.", example:"Bei der Replikation wird aus einem DNA-Strang ein identisches Doppelhelix-Molekül."},
+  {topic:"DNA", word:"die Mutation", meaning:"Eine Veränderung in der DNA-Sequenz.", example:"Eine Mutation kann dazu führen, dass ein Gen falsch abgelesen wird."},
+  {topic:"nan", word:"die Polymerase", meaning:"Ein Enzym, das neue DNA-Stränge oder RNA-Stränge herstellt.", example:"Die DNA-Polymerase kopiert die DNA bei der Replikation."},
+  {topic:"Proteine", word:"Aminosäure", meaning:"Baustein der Proteine; es gibt 21 verschiedene Aminosäuren, die zu langen Ketten verbunden werden.", example:"Proteine bestehen aus vielen miteinander verbundenen Aminosäuren."},
+  {topic:"Proteine", word:"Lactase", meaning:"Verdauungsenzym, das den Milchzucker (Lactose) in Glucose und Galactose spaltet.", example:"Die Lactase spaltet Milchzucker im Dünndarm, damit er vom Körper aufgenommen werden kann."},
+  {topic:"Proteine", word:"Kollagen", meaning:"Strukturprotein, das Haut, Sehnen und Bändern Festigkeit und Elastizität verleiht.", example:"Kollagen sorgt dafür, dass die Haut straff und widerstandsfähig bleibt."},
+  {topic:"Proteine", word:"Myosin", meaning:"Bewegungsprotein in den Muskeln, das sich mit Aktin zusammenschiebt.", example:"Myosin sorgt gemeinsam mit Aktin dafür, dass sich Muskeln zusammenziehen."},
+  {topic:"Proteine", word:"Rezeptorprotein", meaning:"Protein an der Zelloberfläche, das Signale oder Reize aufnimmt und weiterleitet.", example:"Rezeptorproteine in der Nase erkennen Geruchsstoffe und leiten Signale ans Gehirn weiter."},
+  {topic:"Genetik ", word:"das Gen", meaning:"Ein Abschnitt der DNA, der ein bestimmtes Merkmal steuert. ", example:"Das Gen für Haarfarbe entscheidet, ob jemand blonde oder braune Haare hat."},
+  {topic:"Genetik ", word:"das Allel", meaning:"Eine Variante des Gens", example:" Das Gen für Samenfarbe hat das gelbe Allel und das grüne Allel."},
+  {topic:"Genetik ", word:"der Genotyp", meaning:"Die Kombination der Allele, die ein Organismus besitzt. ", example:"Der Genotyp Gg besteht aus einem gelben und einem grünen Allel. "},
+  {topic:"Genetik ", word:"der Phänotyp", meaning:"Das sichtbare Merkmal, das durch den Genotyp bestimmt wird. ", example:"Der Phänotyp ist gelb, obwohl der Genotyp Gg gemischt ist. "},
+  {topic:"Genetik ", word:"das Chromosom", meaning:"Ein langer, aufgewickelter DNA-Faden, der viele Gene enthält, Chromosomen ligen paarweise vor (eines von der Mutter, eines vom Vater)", example:"Der Mensch besitzt 46 Chromosomen, also 23 Chromosomenpaare. "},
+  {topic:"Genetik ", word:"Homozygot", meaning:"Wenn beide Allele eines Gens gleich sind (z. B. AA oder aa).", example:"Das Kind ist homozygot für die Augenfarbe."},
+  {topic:"Genetik ", word:"Heterozygot", meaning:"Wenn die beiden Allele eines Gens unterschiedlich sind (z. B. Aa).", example:"Er ist heterozygot und trägt ein dominantes und ein rezessives Allel."},
+  {topic:"Genetik ", word:"monohybriden Erbgang", meaning:"Erbgang, bei dem nur ein Merkmal betrachtet wird.", example:"Beim monohybriden Erbgang untersucht man nur die Vererbung der Augenfarbe."},
+  {topic:"Genetik ", word:"dihybriden Erbgang ", meaning:"Erbgang, bei dem zwei Merkmale gleichzeitig betrachtet werden.", example:"Der dihybride Erbgang zeigt, wie zwei Merkmale unabhängig vererbt werden."},
+  {topic:"Genetik ", word:"dominant-rezessiven Erbgänge", meaning:"Ein Allel ist dominant und überdeckt das rezessive Allel.", example:"Braune Augen vererben sich oft dominant-rezessiv über blaue Augen."},
+  {topic:"Evolutionäre Entwicklung", word:"Selektionsdruck", meaning:"Druck durch Umweltbedingungen, der entscheidet, welche Lebewesen besser überleben", example:"Durch Selektionsdruck überleben nur gut angepasste Tiere."},
+  {topic:"Evolutionäre Entwicklung", word:"Variation", meaning:"Unterschiede zwischen Individuen derselben Art", example:"Bei Giraffen gibt es Variation, zum Beispiel unterschiedlich lange Hälse."},
+  {topic:"Evolutionäre Entwicklung", word:"Unweltbedingungen", meaning:"Bedingungen der Umwelt, z. B. Klima, Nahrung, Lebensraum", example:"Die Umweltbedingungen bestimmen, welche Tiere besser überleben."},
+  {topic:"Evolutionäre Entwicklung", word:"Nachkommen", meaning:"Kinder oder Junge von Lebewesen", example:"Gut angepasste Tiere haben oft mehr Nachkommen."},
+  {topic:"Evolutionäre Entwicklung", word:"Mutation", meaning:"Zufällige Veränderung im Erbgut", example:"Eine Mutation kann neue Merkmale entstehen lassen."},
+  {topic:"Evolutionäre Entwicklung", word:"chemische Evolution", meaning:"Phase der Erdgeschichte, bei dem aus einfachen chemischen Stoffen die ersten komplexen Moleküle des Lebens entstanden", example:"Die chemische Evolution führte zur Entstehung der ersten organischen Moleküle."},
+  {topic:"Evolutionäre Entwicklung", word:"biologische Evolution", meaning:"Veränderung von Lebewesen über viele Generationen hinweg durch Mechanismen wie Mutation und Selektion", example:"Die biologische Evolution hat zur Vielfalt der heutigen Lebewesen geführt."},
+  {topic:"Evolutionäre Entwicklung", word:"der Kreationismus", meaning:"(besonders in den USA verbreitetes) Festhalten an einer wortwörtlichen Auslegung des biblischen Schöpfungsberichts", example:"Der Kreationismus wird von manchen Menschen als Erklärung für die Entstehung des Lebens vertreten."},
+  {topic:"Evolutionäre Entwicklung", word:"die Abstammungstheorie", meaning:"Theorie, dass alle Lebewesen von gemeinsamen Vorfahren abstammen und sich im Laufe der Evolution verändert haben", example:"Nach der Abstammungstheorie haben alle heutigen Lebewesen gemeinsame Vorfahren."},
+  {topic:"Evolutionäre Entwicklung", word:"die Angepasstheit", meaning:"Zustand, bei dem Merkmale eines Lebewesens seine Überlebens- und Fortpflanzungschancen in einer bestimmten Umwelt verbessern", example:"Die Angepasstheit des Polarfuchses zeigt sich in seinem dichten, weißen Fell."},
+];
+
+// Load from localStorage
+try{
+  const saved = localStorage.getItem('biology-vocab-data');
+  if(saved){
+    const parsed = JSON.parse(saved);
+    if(Array.isArray(parsed) && parsed.length > 0){
+      DATA = parsed;
+    }
+  }
+}catch{}
+
+// DOM
+const tbody = $('#tbl tbody');
+const cards = $('#cards');
+const q = $('#q');
+const modeSel = $('#mode');
+const suggest = $('#suggest');
+const countEl = $('#count');
+
+function save(){ 
+  try{ 
+    localStorage.setItem('biology-vocab-data', JSON.stringify(DATA)); 
+  }catch{} 
+}
+
+function renderTable(rows){
+  tbody.innerHTML = rows.map(r => {
+    const query = q.value.trim();
+    return `<tr>
+      <td class="topic">${highlight(r.topic||'', query)}</td>
+      <td class="word">${highlight(r.word||'', query)}</td>
+      <td>${highlight(r.meaning||'', query)}</td>
+      <td>${highlight(r.example||'', query)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderCards(rows){
+  const query = q.value.trim();
+  cards.innerHTML = rows.map(r => {
+    return `<div class="card">
+      ${r.topic ? `<div class="card-topic">${highlight(r.topic, query)}</div>` : ''}
+      <div class="card-word">${highlight(r.word||'', query)}</div>
+      <div class="card-meaning">${highlight(r.meaning||'', query)}</div>
+      ${r.example ? `<div class="card-example"><strong>Beispiel:</strong> ${highlight(r.example, query)}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function render(rows){
+  renderTable(rows);
+  renderCards(rows);
+  if(countEl) countEl.textContent = rows.length;
+}
+
+function filter(){
+  const query = q.value.trim();
+  if(!query){ render(DATA); makeSuggestions(''); return; }
+  const nq = norm(query);
+  const mode = modeSel.value;
+  const rows = DATA.filter(r => {
+    const hay = [r.word, r.meaning, r.topic, r.example].map(norm);
+    if(mode==='starts') return hay.some(x => x.startsWith(nq));
+    return hay.some(x => x.includes(nq));
+  });
+  render(rows);
+  makeSuggestions(query);
+}
+
+function makeSuggestions(query){
+  const nq = norm(query);
+  let words = Array.from(new Set(DATA.map(r=>r.word).filter(Boolean)));
+  if(!nq){ suggest.innerHTML=''; return; }
+  if(nq.length===1){
+    words = words.filter(w => norm(w).startsWith(nq)).slice(0,12);
+  }else{
+    words = words.filter(w => norm(w).includes(nq)).slice(0,12);
+  }
+  suggest.innerHTML = words.map(w=>`<button class="pill" data-w="${w}">${w}</button>`).join('');
+  $$('.pill').forEach(b=>b.addEventListener('click',()=>{ q.value=b.dataset.w; filter(); q.focus(); }))
+}
+
+const doFilter = debounce(filter, 120);
+q.addEventListener('input', doFilter);
+modeSel.addEventListener('change', filter);
+$('#clear').addEventListener('click', ()=>{ q.value=''; filter(); q.focus(); });
+
+// Initial render
+render(DATA);
+
+// Add
+$('#addBtn').addEventListener('click', ()=>{
+  const topic = $('#topic').value.trim();
+  const word = $('#word').value.trim();
+  const meaning = $('#meaning').value.trim();
+  const example = $('#example').value.trim();
+  if(!word || !meaning) return alert('Wort und Bedeutung sind erforderlich.');
+  DATA.unshift({topic, word, meaning, example});
+  save();
+  $('#topic').value = $('#word').value = $('#meaning').value = $('#example').value = '';
+  filter();
+  q.focus();
+});
+
+// Export
+$('#exportBtn').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(DATA, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'biology-vocab.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+// Import
+$('#file').addEventListener('change', async (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  const text = await f.text();
+  let rows = [];
+  try{ 
+    rows = JSON.parse(text); 
+    if(!Array.isArray(rows)) throw 0; 
+  }
+  catch{
+    // CSV/TSV
+    const lines = text.split(/\r?\n/).filter(Boolean);
+    rows = lines.map(line => line.split(/[\t,]/)).map(c=>({
+      topic:c[0]||'', 
+      word:c[1]||'', 
+      meaning:c[2]||'', 
+      example:c[3]||''
+    }));
+  }
+  rows = rows.filter(r => r && r.word && r.meaning);
+  DATA = [...rows, ...DATA];
+  save();
+  filter();
+  e.target.value='';
+});
+</script>
+</body>
+</html>

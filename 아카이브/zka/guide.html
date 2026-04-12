@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Writing – Exam Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f13;
+    --surface: #17171e;
+    --border: #2a2a36;
+    --c1: #c8a96e;
+    --c2: #c8a96e;
+    --c3: #6e9ec8;
+    --c4: #7ec86e;
+    --c5: #c86e9e;
+    --c6: #6ec8c8;
+    --c7: #a46ec8;
+    --text: #e8e8f0;
+    --muted: #7a7a90;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.7; }
+  header { padding: 60px 40px 40px; border-bottom: 1px solid var(--border); max-width: 980px; margin: 0 auto; }
+  header .tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c1); margin-bottom: 12px; }
+  header h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; color: #fff; }
+  header p { color: var(--muted); margin-top: 12px; font-size: 15px; }
+  .nav { display: flex; gap: 8px; flex-wrap: wrap; padding: 20px 40px; max-width: 980px; margin: 0 auto; border-bottom: 1px solid var(--border); }
+  .nav a { padding: 5px 13px; border-radius: 20px; font-size: 12px; font-weight: 500; text-decoration: none; border: 1px solid var(--border); color: var(--muted); transition: all 0.2s; }
+  .nav a:hover { color: var(--text); border-color: var(--c1); }
+  main { max-width: 980px; margin: 0 auto; padding: 40px 40px 80px; }
+
+  .format-block { margin-bottom: 56px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .format-header { padding: 22px 28px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); }
+  .format-num { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; flex-shrink: 0; }
+  .format-header h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: #fff; }
+  .format-header .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 10px; border-radius: 10px; margin-left: 10px; font-family: 'DM Sans', sans-serif; font-weight: 500; vertical-align: middle; }
+
+  /* per-format colors */
+  .f1 { background: rgba(200,169,110,0.07); } .f1 .format-num { background: rgba(200,169,110,0.2); color: var(--c1); }
+  .f2 { background: rgba(200,169,110,0.03); } .f2 .format-num { background: rgba(200,169,110,0.1); color: var(--c2); }
+  .f3 { background: rgba(110,158,200,0.07); } .f3 .format-num { background: rgba(110,158,200,0.2); color: var(--c3); }
+  .f4 { background: rgba(126,200,110,0.07); } .f4 .format-num { background: rgba(126,200,110,0.2); color: var(--c4); }
+  .f5 { background: rgba(200,110,158,0.07); } .f5 .format-num { background: rgba(200,110,158,0.2); color: var(--c5); }
+  .f6 { background: rgba(110,200,200,0.07); } .f6 .format-num { background: rgba(110,200,200,0.2); color: var(--c6); }
+  .f7 { background: rgba(164,110,200,0.07); } .f7 .format-num { background: rgba(164,110,200,0.2); color: var(--c7); }
+
+  .format-body { padding: 24px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 640px) { .format-body { grid-template-columns: 1fr; } .nav, header, main { padding-left: 20px; padding-right: 20px; } }
+  .full-width { grid-column: 1 / -1; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .card h3 { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; font-weight: 500; }
+
+  .structure-step { display: flex; gap: 12px; margin-bottom: 9px; align-items: flex-start; }
+  .step-num { font-size: 11px; font-weight: 600; min-width: 20px; padding-top: 2px; color: var(--muted); }
+  .step-text strong { font-weight: 600; display: block; font-size: 13.5px; color: var(--text); }
+  .step-text span { font-size: 12.5px; color: var(--muted); }
+
+  .phrase-list { list-style: none; }
+  .phrase-list li { font-size: 13px; padding: 5px 10px; margin-bottom: 4px; border-radius: 6px; background: rgba(255,255,255,0.03); border-left: 2px solid var(--border); color: var(--text); }
+  .phrase-list .sublabel { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); padding: 8px 0 2px; border: none; background: none; }
+
+  .tip { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 9px 13px; font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+  .tip strong { color: var(--c1); }
+
+  .vs-box { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(200,169,110,0.04); border: 1px solid rgba(200,169,110,0.18); border-radius: 12px; padding: 16px; }
+  .vs-col h4 { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
+  .vs-col ul { list-style: none; }
+  .vs-col ul li { font-size: 13px; color: var(--muted); padding: 3px 0; }
+  .vs-col ul li::before { content: "→ "; color: var(--c1); }
+
+  .prompt-box { background: rgba(255,255,255,0.03); border: 1px dashed var(--border); border-radius: 8px; padding: 13px; font-size: 13px; color: var(--muted); font-style: italic; margin-bottom: 10px; }
+  .word-count { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 12px; background: rgba(200,169,110,0.15); color: var(--c1); margin-bottom: 10px; letter-spacing: 0.05em; }
+  .model-answer { font-size: 13px; color: var(--text); line-height: 1.8; white-space: pre-line; }
+
+  .general-tips { border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+  .general-tips h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #fff; margin-bottom: 20px; }
+  .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .tip-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 15px; font-size: 13px; }
+  .tip-card strong { display: block; color: var(--c1); margin-bottom: 5px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">SEK I · Gymnasium · 2026 · B1</div>
+  <h1>English Writing<br>Exam Prep</h1>
+  <p>7 Formats · Structure · Phrases · Model Answers · ~200–250 words</p>
+</header>
+
+<nav class="nav">
+  <a href="#article">① Article</a>
+  <a href="#blog">② Blog Post</a>
+  <a href="#email">③ Email / Letter</a>
+  <a href="#comment">④ Comment</a>
+  <a href="#speech">⑤ Speech</a>
+  <a href="#review">⑥ Review</a>
+  <a href="#report">⑦ Report</a>
+  <a href="#tips">Tips</a>
+</nav>
+
+<main>
+
+<!-- ① ARTICLE -->
+<div class="format-block f1" id="article">
+  <div class="format-header">
+    <div class="format-num">1</div>
+    <div>
+      <h2>Article <span class="badge" style="background:rgba(200,169,110,0.15);color:var(--c1)">Formal · Neutral</span></h2>
+      <div class="sub">Newspaper · Magazine · School publication · Third-person · Evidence-based</div>
+    </div>
+  </div>
+  <div class="format-body">
+    <div class="card">
+      <h3>Structure</h3>
+      <div class="structure-step"><span class="step-num">①</span><div class="step-text"><strong>Headline</strong><span>Informative, not clickbait — state the topic clearly</span></div></div>
+      <div class="structure-step"><span class="step-num">②</span><div class="step-text"><strong>Introduction</strong><span>Give context and outline what the article covers</span></div></div>
+      <div class="structure-step"><span class="step-num">③</span><div class="step-text"><strong>Main Body (2 para)</strong><span>One point + evidence + analysis per paragraph</span></div></div>
+      <div class="structure-step"><span class="step-num">④</span><div class="step-text"><strong>Conclusion</strong><span>Balanced summary — no new arguments</span></div></div>
+      <div class="tip"><strong>Key rule:</strong> No "I think." Use "It could be argued…" / "Research suggests…" / "Critics claim…"</div>
+    </div>
+    <div class="card">
+      <h3>Useful Phrases</h3>
+      <ul class="phrase-list">
+        <li>Recent research suggests that…</li>
+        <li>According to experts, …</li>
+        <li>One significant factor is…</li>
+        <li>It is widely believed that…</li>
+        <li>Critics argue that…</li>
+        <li>This raises the question of whether…</li>
+        <li>Despite this, evidence shows…</li>
+        <li>In conclusion, it appears that…</li>
+      </ul>
+    </div>
+    <div class="card full-width">
+      <h3>Practice Prompt</h3>
+      <div class="prompt-box">Write an article for a school magazine about whether it is important for young people to learn a foreign language. Present arguments for and against. (~200–250 words)</div>
+      <div class="word-count">Model Answer · ~225 words</div>
+      <div class="model-answer"><strong>Should Learning a Foreign Language Be Compulsory?</strong>
+
+In an increasingly globalised world, the ability to communicate in more than one language is considered by many to be an essential skill. Yet the question of whether foreign language learning should be compulsory for all students remains a subject of debate.
+
+Supporters argue that learning a second language offers significant cognitive benefits. Studies indicate that bilingual individuals tend to demonstrate stronger problem-solving skills and greater mental flexibility. Furthermore, language skills open doors to international career opportunities and allow for deeper cultural understanding — both of which are increasingly valued in today's job market.
+
+However, critics point out that not all students learn at the same pace, and compulsory language classes can create frustration among those who struggle. Some argue that time spent on language learning could be allocated to subjects more directly relevant to a student's interests and future career path.
+
+Despite these concerns, the evidence in favour of language education remains considerable. Rather than a one-size-fits-all approach, schools might consider offering flexible pathways that allow students to engage with languages in ways that match their abilities.
+
+In conclusion, while compulsory language learning is not without its challenges, the benefits it offers — cognitively, professionally, and culturally — are too significant to dismiss entirely.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ② BLOG POST -->
+<div class="format-block f2" id="blog">
+  <div class="format-header">
+    <div class="format-num">2</div>
+    <div>
+      <h2>Blog Post <span class="badge" style="background:rgba(200,169,110,0.1);color:var(--c2)">Informal · Personal</span></h2>
+      <div class="sub">First-person · Conversational · Personal voice · Reader engagement</div>
+    </div>
+  </div>
+  <div class="format-body">
+    <div class="vs-box">
+      <div class="vs-col">
+        <h4 style="color:var(--c1)">Blog — you CAN:</h4>
+        <ul>
+          <li>Use "I" and "you" freely</li>
+          <li>Use contractions (it's, don't, I've)</li>
+          <li>Share personal stories and feelings</li>
+          <li>Add humour or a casual tone</li>
+          <li>Address the reader directly</li>
+        </ul>
+      </div>
+      <div class="vs-col">
+        <h4 style="color:var(--muted)">Still required:</h4>
+        <ul>
+          <li>A catchy title + hook opening</li>
+          <li>Logical paragraph structure</li>
+          <li>Reasons and examples</li>
+          <li>~200–250 words</li>
+          <li>A conclusion or sign-off</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Structure</h3>
+      <div class="structure-step"><span class="step-num">①</span><div class="step-text"><strong>Title + Hook</strong><span>Catchy, personal — question, bold claim, funny opener</span></div></div>
+      <div class="structure-step"><span class="step-num">②</span><div class="step-text"><strong>Personal intro</strong><span>Why does this topic matter to you? Share your experience</span></div></div>
+      <div class="structure-step"><span class="step-num">③</span><div class="step-text"><strong>Main thoughts (2 para)</strong><span>Opinions, stories, observations — always with reasons</span></div></div>
+      <div class="structure-step"><span class="step-num">④</span><div class="step-text"><strong>Sign-off</strong><span>Invite reader to respond, ask a question, casual goodbye</span></div></div>
+      <div class="tip"><strong>Tone:</strong> Writing to a friend — relaxed but still grammatically correct. Not slang.</div>
+    </div>
+    <div class="card">
+      <h3>Useful Phrases</h3>
+      <ul class="phrase-list">
+        <li>Okay, I have to be honest with you…</li>
+        <li>I never thought I'd say this, but…</li>
+        <li>Let me tell you about the time…</li>
+        <li>Here's the thing though —</li>
+        <li>Honestly, I think most of us…</li>
+        <li>Don't even get me started on…</li>
+        <li>What do you think? Drop a comment!</li>
+        <li>Until next time — [name]</li>
+      </ul>
+    </div>
+    <div class="card full-width">
+      <h3>Practice Prompt</h3>
+      <div class="prompt-box">Write a blog post about a hobby or activity you enjoy. Describe what it is, why you love it, and why you think others should try it. (~200–250 words)</div>
+      <div class="word-count">Model Answer · ~230 words</div>
+      <div class="model-answer"><strong>Why You Should Try Playing Chess (Yes, Really)</strong>
+
+I know what you're thinking. Chess? Isn't that for old men in parks? That's exactly what I thought before my cousin forced me to play a game last summer. Three hours later, I'd completely forgotten to eat lunch. That's when I knew I was hooked.
+
+Here's the thing about chess that nobody tells you: it's not really about memorising moves. It's about reading your opponent, thinking two steps ahead, and staying calm when everything starts going wrong on the board. It sounds stressful, but honestly it's one of the most satisfying feelings when a plan you set up five moves ago actually works out.
+
+What surprised me most is how quickly I started noticing the effects outside of chess too. I'm more patient now when I'm solving problems — I actually stop and think before reacting, which is not exactly something I was known for before.
+
+The best part? You can play for free online, anytime, against people from all over the world. There's no equipment to buy and no special skills needed to get started. You'll lose a lot at first, but that's honestly part of the fun.
+
+So if you're looking for something to do that actually exercises your brain, give it a shot. You might surprise yourself.
+
+What's your go-to hobby? Let me know in the comments!
+— [Your Name]</div>
+    </div>
+  </div>
+</div>
+
+<!-- ③ EMAIL / LETTER -->
+<div class="format-block f3" id="email">
+  <div class="format-header">
+    <div class="format-num">3</div>
+    <div>
+      <h2>Email / Letter <span class="badge" style="background:rgba(110,158,200,0.15);color:var(--c3)">Formal or Informal</span></h2>
+      <div class="sub">Fixed greeting + closing · Purpose-driven · Match tone to recipient</div>
+    </div>
+  </div>
+  <div class="format-body">
+    <div class="card">
+      <h3>Structure (Formal)</h3>
+      <div class="structure-step"><span class="step-num">①</span><div class="step-text"><strong>Salutation</strong><span>Dear Mr/Ms [Name], / Dear Sir or Madam,</span></div></div>
+      <div class="structure-step"><span class="step-num">②</span><div class="step-text"><strong>Opening line</strong><span>State your reason for writing immediately</span></div></div>
+      <div class="structure-step"><span class="step-num">③</span><div class="step-text"><strong>Main Body</strong><span>Details, request, or explanation in 2 paragraphs</span></div></div>
+      <div class="structure-step"><span class="step-num">④</span><div class="step-text"><strong>Closing</strong><span>Thank them + next step + "Yours sincerely,"</span></div></div>
+      <div class="tip"><strong>Informal version:</strong> "Hi [Name]!" → casual tone → "Best wishes," or "Take care,"</div>
+    </div>
+    <div class="card">
+      <h3>Useful Phrases</h3>
+      <ul class="phrase-list">
+        <li class="sublabel">Formal</li>
+        <li>I am writing to enquire about…</li>
+        <li>I would be grateful if you could…</li>
+        <li>I look forward to hearing from you.</li>
+        <li>Please do not hesitate to contact me.</li>
+        <li>Yours sincerely, / Yours faithfully,</li>
+        <li class="sublabel">Informal</li>
+        <li>How are you? It's been ages!</li>
+        <li>I just wanted to let you know…</li>
+        <li>Can't wait to hear from you!</li>
+      </ul>
+    </div>
+    <div class="card full-width">
+      <h3>Practice Prompt</h3>
+      <div class="prompt-box">Write a formal email to your school principal suggesting that the school should introduce a student garden project. Explain your idea and give reasons. (~200–250 words)</div>
+      <div class="word-count">Model Answer · ~215 words</div>
+      <div class="model-answer">Dear Ms Schmidt,
+
+I am writing to suggest an idea that I believe could benefit our school community greatly: a student garden project on the school grounds.
+
+The idea would be to convert the unused area next to the sports hall into a small vegetable and herb garden. Students from different year groups could take turns caring for it during breaks or in a dedicated weekly slot. The produce could then be used in the school canteen or donated to local families in need.
+
+I think this project would have many advantages. First of all, it would give students a hands-on experience of where food comes from, which connects well to topics we study in biology and geography. It would also encourage teamwork and responsibility. Furthermore, spending time outdoors has been shown to reduce stress and improve concentration.
+
+Of course, there would be initial costs involved, such as tools, seeds, and raised beds. However, I believe we could apply for a small environmental grant or ask local businesses to sponsor the project. Many schools in Germany have done this successfully.
+
+I would be very happy to discuss this idea further and help organise a planning group of interested students.
+
+Thank you very much for taking the time to read this email. I look forward to hearing your thoughts.
+
+Yours sincerely,
+[Your Name]</div>
+    </div>
+  </div>
+</div>
+
+<!-- ④ COMMENT -->
+<div class="format-block f4" id="comment">
+  <div class="format-header">
+    <div class="format-num">4</div>
+    <div>
+      <h2>Comment <span class="badge" style="background:rgba(126,200,110,0.15);color:var(--c4)">Written Opinion · Semi-formal</span></h2>
+      <div class="sub">Responds to a statement or question · Structured argument · Written for a publication or website</div>
+    </div>
+  </div>
+  <div class="format-body">
+    <div class="card">
+      <h3>Structure</h3>
+      <div class="structure-step"><span class="step-num">①</span><div class="step-text"><strong>State your position</strong><span>Open with your opinion clearly — no beating around the bush</span></div></div>
+      <div class="structure-step"><span class="step-num">②</span><div class="step-text"><strong>Argument 1</strong><span>Claim → reason → example or evidence</span></div></div>
+      <div class="structure-step"><span class="step-num">③</span><div class="step-text"><strong>Argument 2</strong><span>Another point supporting your view</span></div></div>
+      <div class="structure-step"><span class="step-num">④</span><div class="step-text"><strong>Counter-argument</strong><span>Acknowledge the other side — then explain why you still disagree</span></div></div>
+      <div class="structure-step"><span class="step-num">⑤</span><div class="step-text"><strong>Conclusion</strong><span>Restate your position firmly</span></div></div>
+      <div class="tip"><strong>Tone:</strong> Can use "I" but stays measured and logical. Not as emotional as a speech.</div>
+    </div>
+    <div class="card">
+      <h3>Useful Phrases</h3>
+      <ul class="phrase-list">
+        <li>In my opinion, / I strongly believe that…</li>
+        <li>First and foremost, …</li>
+        <li>Another important point is that…</li>
+        <li>Admittedly, some people argue that…</li>
+        <li>However, this overlooks the fact that…</li>
+        <li>The evidence clearly shows that…</li>
+        <li>All things considered, …</li>
+        <li>For these reasons, I maintain that…</li>
+      </ul>
+    </div>
+    <div class="card full-width">
+      <h3>Practice Prompt</h3>
+      <div class="prompt-box">Write a comment responding to the statement: "School uniforms should be compulsory in all schools." Do you agree or disagree? (~200–250 words)</div>
+      <div class="word-count">Model Answer · ~225 words</div>
+      <div class="model-answer">In my opinion, making school uniforms compulsory would do more harm than good, and I strongly disagree with this proposal.
+
+First and foremost, clothing is one of the few ways teenagers can express their individuality. At a time when young people are developing their sense of identity, being forced into identical outfits undermines their ability to explore who they are. Self-expression matters, and it begins with small personal choices.
+
+Another important point is that uniforms do not eliminate the problems they claim to solve. Bullying does not disappear simply because everyone wears the same shirt — it shifts to other markers such as shoes, bags, or hairstyles. The assumption that uniforms create social equality is therefore misleading.
+
+Admittedly, some argue that uniforms remove pressure on families who cannot afford fashionable clothing. This concern is legitimate. However, a flexible dress code — rather than a strict uniform — would achieve the same goal while still allowing students some personal freedom.
+
+All things considered, the case for compulsory uniforms rests on assumptions that do not hold up under scrutiny. Schools should invest their energy in building a respectful, inclusive culture through strong values and good teaching — not through what their students wear.
+
+For these reasons, I maintain that compulsory uniforms are an unnecessary restriction on students' freedom.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑤ SPEECH -->
+<div class="format-block f5" id="speech">
+  <div class="format-header">
+    <div class="format-num">5</div>
+    <div>
+      <h2>Speech <span class="badge" style="background:rgba(200,110,158,0.15);color:var(--c5)">Spoken · Persuasive · Audience-aware</span></h2>
+      <div class="sub">Delivered out loud · Direct address · Emotional appeal · Rhetorical devices</div>
+    </div>
+  </div>
+  <div class="format-body">
+    <div class="vs-box">
+      <div class="vs-col">
+        <h4 style="color:var(--c5)">Speech vs Comment</h4>
+        <ul>
+          <li>Opens with "Ladies and gentlemen,"</li>
+          <li>Speaks directly: "You", "We", "Ask yourself…"</li>
+          <li>Uses rhetorical questions</li>
+          <li>More emotional, passionate tone</li>
+          <li>Ends with "Thank you for listening."</li>
+        </ul>
+      </div>
+      <div class="vs-col">
+        <h4 style="color:var(--muted)">Rhetorical devices to use:</h4>
+        <ul>
+          <li>Rhetorical question: "How long can we ignore this?"</li>
+          <li>Rule of three: "We must act — now, together, decisively."</li>
+          <li>Repetition: "It is time. It is time. It is time."</li>
+          <li>Direct address: "Think about your own family…"</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Structure</h3>
+      <div class="structure-step"><span class="step-num">①</span><div class="step-text"><strong>Opening address</strong><span>"Ladies and gentlemen," / "Fellow students,"</span></div></div>
+      <div class="structure-step"><span class="step-num">②</span><div class="step-text"><strong>Hook</strong><span>Striking question, statistic, or personal story to grab attention</span></div></div>
+      <div class="structure-step"><span class="step-num">③</span><div class="step-text"><strong>Arguments (2–3)</strong><span>Build emotion and logic together — involve the audience</span></div></div>
+      <div class="structure-step"><span class="step-num">④</span><div class="step-text"><strong>Call to action</strong><span>Tell the audience what to think, feel, or do</span></div></div>
+      <div class="structure-step"><span class="step-num">⑤</span><div class="step-text"><strong>Closing</strong><span>"Thank you for listening." / "Thank you."</span></div></div>
+    </div>
+    <div class="card">
+      <h3>Useful Phrases</h3>
+      <ul class="phrase-list">
+        <li>Ladies and gentlemen, …</li>
+        <li>Ask yourself: when did you last…?</li>
+        <li>We cannot afford to ignore…</li>
+        <li>Every single one of us has a role to play.</li>
+        <li>It is high time that we…</li>
+        <li>Imagine a world where…</li>
+        <li>Together, we can make a difference.</li>
+        <li>Thank you for listening.</li>
+      </ul>
+    </div>
+    <div class="card full-width">
+      <h3>Practice Prompt</h3>
+      <div class="prompt-box">Write a speech for your school assembly arguing that students should do more to protect the environment in their daily lives. (~200–250 words)</div>
+      <div class="word-count">Model Answer · ~235 words</div>
+      <div class="model-answer">Ladies and gentlemen, fellow students —
+
+Ask yourself: when did you last think about what happens to the plastic bottle you threw away this morning?
+
+We live in a generation that grew up hearing about climate change. We have seen the documentaries, read the articles, and sat through the lessons. And yet, in our daily lives, many of us still act as though none of it applies to us personally. I am not here to blame anyone — I am here to remind us that we are more powerful than we think.
+
+Small actions genuinely add up. Choosing a reusable bottle, taking the stairs instead of the lift, eating less meat one day a week — none of these things will save the planet on their own. But multiplied by hundreds of students in this school, they start to mean something. And habits built now will last a lifetime.
+
+Some of you might be thinking: what difference can one school make? The answer is: more than you realise. Schools that have introduced environmental projects have inspired their local communities to follow. Change rarely starts at the top. It starts with us.
+
+We cannot afford to wait for governments or corporations to act first. Every single one of us has a role to play — starting today, starting here.
+
+So I ask you: what will you change this week?
+
+Thank you for listening.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑥ REVIEW -->
+<div class="format-block f6" id="review">
+  <div class="format-header">
+    <div class="format-num">6</div>
+    <div>
+      <h2>Review <span class="badge" style="background:rgba(110,200,200,0.15);color:var(--c6)">Evaluative · Personal</span></h2>
+      <div class="sub">Film · Book · Restaurant · Event · Game — describe + evaluate + recommend</div>
+    </div>
+  </div>
+  <div class="format-body">
+    <div class="card">
+      <h3>Structure</h3>
+      <div class="structure-step"><span class="step-num">①</span><div class="step-text"><strong>Introduction</strong><span>What is it? Give brief context (genre, author, type)</span></div></div>
+      <div class="structure-step"><span class="step-num">②</span><div class="step-text"><strong>Positives</strong><span>What worked well? Be specific — give examples</span></div></div>
+      <div class="structure-step"><span class="step-num">③</span><div class="step-text"><strong>Negatives</strong><span>What could be better? Be fair and balanced</span></div></div>
+      <div class="structure-step"><span class="step-num">④</span><div class="step-text"><strong>Recommendation</strong><span>Who would enjoy it? Star rating optional</span></div></div>
+      <div class="tip"><strong>Tone:</strong> Personal and evaluative — "I" is fine. Back up every opinion with a specific reason.</div>
+    </div>
+    <div class="card">
+      <h3>Useful Phrases</h3>
+      <ul class="phrase-list">
+        <li>One of the highlights was definitely…</li>
+        <li>What stood out most was…</li>
+        <li>The [plot / acting / writing] was particularly…</li>
+        <li>On the downside, …</li>
+        <li>Despite this, … is well worth…</li>
+        <li>Overall, I would highly recommend…</li>
+        <li>It is particularly suited to…</li>
+        <li>I would give it ★★★★ out of five.</li>
+      </ul>
+    </div>
+    <div class="card full-width">
+      <h3>Practice Prompt</h3>
+      <div class="prompt-box">Write a review of a film, book, or game you have recently experienced. Describe it, evaluate its strengths and weaknesses, and say whether you would recommend it. (~200–250 words)</div>
+      <div class="word-count">Model Answer · ~230 words</div>
+      <div class="model-answer"><strong>Review: "The Martian" (Film, 2015)</strong>
+
+"The Martian" is a science fiction film directed by Ridley Scott, based on Andy Weir's novel of the same name. It follows astronaut Mark Watney, played by Matt Damon, who is accidentally stranded on Mars and must use his scientific knowledge to survive until a rescue mission can reach him.
+
+One of the highlights is undoubtedly the film's tone. Despite its life-or-death premise, the story manages to be funny, optimistic, and genuinely uplifting. Watney's problem-solving mindset makes him an immediately likeable protagonist, and each challenge he faces is engaging to watch unfold. The cinematography is also impressive — the sweeping Martian landscapes create a powerful sense of isolation and scale.
+
+On the downside, some of the scientific details have been simplified or exaggerated for dramatic effect, which may frustrate viewers with a background in physics or chemistry. A few of the supporting subplots on Earth also feel underdeveloped compared to the strong central storyline.
+
+Overall, however, "The Martian" is a compelling and feel-good watch that balances spectacle with intelligence. It is suitable for teenagers and adults alike, and may even inspire an interest in science or space exploration.
+
+I would give it four and a half stars out of five and recommend it without hesitation.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑦ REPORT -->
+<div class="format-block f7" id="report">
+  <div class="format-header">
+    <div class="format-num">7</div>
+    <div>
+      <h2>Report <span class="badge" style="background:rgba(164,110,200,0.15);color:var(--c7)">Formal · Factual · Structured</span></h2>
+      <div class="sub">Uses headings · Neutral tone · No personal opinions · Ends with recommendation</div>
+    </div>
+  </div>
+  <div class="format-body">
+    <div class="vs-box">
+      <div class="vs-col">
+        <h4 style="color:var(--c7)">Report vs Review</h4>
+        <ul>
+          <li>Uses clear headings (Introduction, Findings…)</li>
+          <li>No "I" — write in the passive or third person</li>
+          <li>Neutral, factual language throughout</li>
+          <li>Findings based on data or observation</li>
+          <li>Always ends with a formal Recommendation</li>
+        </ul>
+      </div>
+      <div class="vs-col">
+        <h4 style="color:var(--muted)">Key differences from review:</h4>
+        <ul>
+          <li>No star ratings or personal taste</li>
+          <li>Written for a specific purpose/audience</li>
+          <li>Objective — avoids emotional language</li>
+          <li>More like a formal document than an essay</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Structure</h3>
+      <div class="structure-step"><span class="step-num">①</span><div class="step-text"><strong>Title + Introduction</strong><span>State the purpose and scope of the report</span></div></div>
+      <div class="structure-step"><span class="step-num">②</span><div class="step-text"><strong>Findings</strong><span>Present information objectively under subheadings</span></div></div>
+      <div class="structure-step"><span class="step-num">③</span><div class="step-text"><strong>Conclusion</strong><span>Summarise the key findings briefly</span></div></div>
+      <div class="structure-step"><span class="step-num">④</span><div class="step-text"><strong>Recommendation</strong><span>What should be done? Clear and practical</span></div></div>
+      <div class="tip"><strong>Formatting:</strong> Bold or underline your headings. Keep paragraphs short and factual.</div>
+    </div>
+    <div class="card">
+      <h3>Useful Phrases</h3>
+      <ul class="phrase-list">
+        <li>The aim of this report is to…</li>
+        <li>This report was commissioned to…</li>
+        <li>The findings indicate that…</li>
+        <li>It was observed that…</li>
+        <li>A significant number of students reported…</li>
+        <li>In conclusion, the evidence suggests…</li>
+        <li>It is recommended that…</li>
+        <li>Further action should be taken to…</li>
+      </ul>
+    </div>
+    <div class="card full-width">
+      <h3>Practice Prompt</h3>
+      <div class="prompt-box">Your school has asked you to write a report on how students currently use their free time and whether the school should offer more extracurricular activities. (~200–250 words)</div>
+      <div class="word-count">Model Answer · ~230 words</div>
+      <div class="model-answer"><strong>Report on Student Free Time and Extracurricular Provision</strong>
+
+<strong>Introduction</strong>
+The aim of this report is to examine how students at our school currently spend their free time and to assess whether the school's extracurricular offering meets their needs.
+
+<strong>Findings</strong>
+A survey conducted among students in Years 8 to 10 revealed that the majority of respondents spend most of their free time on digital activities, including gaming, streaming, and social media. While many students expressed satisfaction with this, a significant proportion indicated that they would welcome more structured after-school activities.
+
+The most commonly requested activities were team sports, creative arts, and coding workshops. Several students noted that existing clubs meet infrequently or are not well advertised, which reduces participation.
+
+It was also observed that students who regularly participate in extracurricular activities tend to report higher levels of motivation and general wellbeing, suggesting a positive link between structured activities and academic engagement.
+
+<strong>Conclusion</strong>
+The evidence suggests that while students have access to leisure time, many are not using it in ways that fully support their personal development. Current extracurricular provision is insufficient to meet student demand.
+
+<strong>Recommendation</strong>
+It is recommended that the school introduce at least three new after-school clubs per term, improve communication about existing activities, and survey students annually to ensure provision reflects their interests.</div>
+    </div>
+  </div>
+</div>
+
+<!-- GENERAL TIPS -->
+<div class="general-tips" id="tips">
+  <h2>General Writing Tips</h2>
+  <div class="tips-grid">
+    <div class="tip-card"><strong>📝 Word Count</strong>Aim for 200–250 words. Under 180 is too short. Over 280 wastes time and loses focus.</div>
+    <div class="tip-card"><strong>🎯 Address the Task</strong>Re-read the prompt. Make sure you answer every part of the question before finishing.</div>
+    <div class="tip-card"><strong>🔗 Connectors</strong><em>however, furthermore, on the other hand, therefore, as a result, admittedly, nevertheless, despite this.</em></div>
+    <div class="tip-card"><strong>✅ Match the Tone</strong>Formal (article, report, email) = no contractions. Personal (blog, speech, review) = first person welcome.</div>
+    <div class="tip-card"><strong>📐 One Idea Per Paragraph</strong>Topic sentence → development → example or evidence. Never mix two ideas in one paragraph.</div>
+    <div class="tip-card"><strong>⏱ Time Management</strong>~5 min planning · ~20 min writing · ~5 min checking. Always leave time to fix errors.</div>
+    <div class="tip-card"><strong>💡 Avoid Repetition</strong>good → <em>excellent / valuable / beneficial</em> · bad → <em>harmful / problematic / concerning</em> · big → <em>significant / considerable</em></div>
+    <div class="tip-card"><strong>🗂 Dictionary</strong>Allowed! Use it to check spelling or upgrade a word — not to translate entire sentences.</div>
+  </div>
+</div>
+
+</main>
+</body>
+</html>

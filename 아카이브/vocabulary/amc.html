@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="icon" href="favicon.png" type="image/x-icon">
+  <title>Word List - English</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0a0a0a;
+      color: #ddd;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+
+    header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #333; }
+    h1 { font-size: 1.5rem; font-weight: 300; letter-spacing: 1px; color: #888; margin-bottom: 0.5rem; }
+    .meta { font-size: 0.75rem; color: #555; }
+
+    .search-section { margin-bottom: 2rem; }
+    .search-bar { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    input[type="text"] {
+      flex: 1;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #ddd;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+    }
+    input[type="text"]:focus { outline: none; border-color: #444; }
+    button, select {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #ddd;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    button:hover, select:hover { background: #252525; border-color: #444; }
+    button:active { transform: scale(0.98); }
+
+    .suggestions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .pill {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #aaa;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .pill:hover { border-color: #444; }
+
+    .table-wrapper { border: 1px solid #333; overflow-x: auto; margin-bottom: 2rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 0.75rem 1rem; border-bottom: 1px solid #333; }
+    th {
+      background: #151515;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    td { font-size: 0.9rem; }
+    tr:hover td { background: #151515; }
+
+    .word { font-weight: 600; }
+    .pos { color: #888; font-size: 0.85rem; text-transform: lowercase; }
+
+    mark { background: #ffd700; color: #000; padding: 0 2px; }
+
+    .cards { display: none; }
+    .card {
+      background: #151515;
+      border: 1px solid #333;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .card-word { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .card-pos { font-size: 0.8rem; color: #888; margin-bottom: 0.5rem; text-transform: lowercase; }
+    .card-meaning { color: #bbb; }
+
+    .add-section {
+      background: #151515;
+      border: 1px solid #333;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .add-section h3 { font-size: 1rem; font-weight: 500; margin-bottom: 1rem; color: #aaa; }
+    .form-row { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+    .form-row input { flex: 1; min-width: 200px; }
+    .form-row button { white-space: nowrap; }
+    .hint { font-size: 0.75rem; color: #666; margin-top: 0.5rem; }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: #555;
+      font-size: 0.8rem;
+      border-top: 1px solid #333;
+    }
+    .count { color: #888; font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .table-wrapper { display: none; }
+      .cards { display: block; }
+      .form-row { flex-direction: column; }
+      .form-row input { min-width: auto; width: 100%; }
+      h1 { font-size: 1.25rem; }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 1rem 0.5rem; }
+      .search-bar { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>English Word List</h1>
+      <div class="meta">Word • Type • Meaning • Last Update: 2026.02.11</div>
+    </header>
+
+    <div class="search-section">
+      <div class="search-bar">
+        <input type="text" id="q" placeholder="Search word, part of speech, or meaning..." />
+        <button id="clear">Clear</button>
+        <select id="mode">
+          <option value="contains">Contains</option>
+          <option value="starts">Starts with</option>
+        </select>
+      </div>
+      <div id="suggest" class="suggestions"></div>
+    </div>
+
+    <!-- Desktop table -->
+    <div class="table-wrapper">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th style="width:26%">Word</th>
+            <th style="width:18%">Type</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Mobile cards -->
+    <div class="cards" id="cards"></div>
+
+    <!-- Add/Import Section -->
+    <div class="add-section">
+      <h3>Add Word</h3>
+      <div class="form-row">
+        <input type="text" id="word" placeholder="Word / Expression" />
+        <input type="text" id="pos" placeholder="Type (e.g., noun, verb)" />
+      </div>
+      <div class="form-row">
+        <input type="text" id="meaning" placeholder="Meaning" />
+      </div>
+      <div class="form-row">
+        <button id="addBtn">Add</button>
+        <button id="exportBtn">Export JSON</button>
+        <label style="display:inline-block">
+          <input type="file" id="file" accept=".json,.csv,.tsv" style="display:none" />
+          <button type="button" onclick="document.getElementById('file').click()">Import</button>
+        </label>
+      </div>
+      <div class="hint">CSV/TSV format: word, part_of_speech, meaning</div>
+    </div>
+
+    <footer>
+      <div>Total: <span id="count" class="count">0</span> items • Saved in LocalStorage (key: wordlist-data)</div>
+    </footer>
+  </div>
+
+<script>
+// Utilities
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+const norm = s => (s||"").toLowerCase().normalize("NFKD").replace(/\p{Diacritic}/gu,"");
+
+function highlight(text, q){
+  if(!q) return text;
+  const t = String(text);
+  const nt = norm(t), nq = norm(q);
+  const i = nt.indexOf(nq);
+  if(i<0) return t;
+  return t.slice(0,i) + '<mark>' + t.slice(i,i+q.length) + '</mark>' + t.slice(i+q.length);
+}
+
+function debounce(fn, ms){ 
+  let t; 
+  return (...a)=>{ 
+    clearTimeout(t); 
+    t=setTimeout(()=>fn(...a), ms); 
+  } 
+}
+
+// Seed data (replaces old vocab)
+let DATA = [
+  {
+    "word": "courtesy",
+    "pos": "noun",
+    "meaning": "respect, politeness"
+  },
+  {
+    "word": "creed",
+    "pos": "noun",
+    "meaning": "system of beliefs"
+  },
+  {
+    "word": "custom",
+    "pos": "noun",
+    "meaning": "traditional behavior"
+  },
+  {
+    "word": "dearth",
+    "pos": "noun",
+    "meaning": "lack, shortage, scarcity"
+  },
+  {
+    "word": "debacle",
+    "pos": "noun",
+    "meaning": "disaster, fiasco"
+  },
+  {
+    "word": "deduct",
+    "pos": "verb",
+    "meaning": "take away, subtract, remove"
+  },
+  {
+    "word": "delight",
+    "pos": "adjective",
+    "meaning": "please, pleasure, happy"
+  },
+  {
+    "word": "demolish",
+    "pos": "verb",
+    "meaning": "destroy, collapse"
+  },
+  {
+    "word": "deteriorate",
+    "pos": "verb",
+    "meaning": "fall apart"
+  },
+  {
+    "word": "disperse",
+    "pos": "verb",
+    "meaning": "scatter, spread out"
+  },
+  {
+    "word": "efface",
+    "pos": "verb",
+    "meaning": "erase"
+  },
+  {
+    "word": "elation",
+    "pos": "noun",
+    "meaning": "intense joy"
+  },
+  {
+    "word": "embrace",
+    "pos": "verb",
+    "meaning": "accept enthusiastically, hug"
+  },
+  {
+    "word": "enigma",
+    "pos": "noun",
+    "meaning": "puzzle, mystery"
+  },
+  {
+    "word": "erratic",
+    "pos": "adjective",
+    "meaning": "unpredictable, inconsistent"
+  },
+  {
+    "word": "evade",
+    "pos": "verb",
+    "meaning": "avoid"
+  },
+  {
+    "word": "vague",
+    "pos": "adjective",
+    "meaning": "not clear, ambiguous"
+  },
+  {
+    "word": "abundance",
+    "pos": "noun",
+    "meaning": "richness, plenty"
+  },
+  {
+    "word": "mitigate",
+    "pos": "verb",
+    "meaning": "reduce, ease"
+  },
+  {
+    "word": "assert",
+    "pos": "verb",
+    "meaning": "claim, argue"
+  },
+  {
+    "word": "concise",
+    "pos": "adjective",
+    "meaning": "short, straight to the point"
+  },
+  {
+    "word": "demean",
+    "pos": "verb",
+    "meaning": "lower, degrade someone"
+  },
+  {
+    "word": "despicable",
+    "pos": "adjective",
+    "meaning": "disgusting, shameful"
+  },
+  {
+    "word": "emulate",
+    "pos": "verb",
+    "meaning": "copy, imitate"
+  },
+  {
+    "word": "cope with",
+    "pos": "verb phrase",
+    "meaning": "deal with"
+  },
+  {
+    "word": "bigotry",
+    "pos": "noun",
+    "meaning": "racism, intolerance"
+  },
+  {
+    "word": "evoke",
+    "pos": "verb",
+    "meaning": "bring, recall"
+  },
+  {
+    "word": "inauguration",
+    "pos": "noun",
+    "meaning": "beginning, introduction"
+  },
+  {
+    "word": "optimism",
+    "pos": "noun",
+    "meaning": "positive thinking"
+  },
+  {
+    "word": "pessimistic",
+    "pos": "adjective",
+    "meaning": "negative thinking"
+  },
+  {
+    "word": "rebut",
+    "pos": "verb",
+    "meaning": "reject, argue against"
+  },
+  {
+    "word": "resilience",
+    "pos": "noun",
+    "meaning": "strength, toughness"
+  }
+];
+
+// Load from localStorage
+try{
+  const saved = localStorage.getItem('wordlist-data');
+  if(saved){
+    const parsed = JSON.parse(saved);
+    if(Array.isArray(parsed) && parsed.length > 0) DATA = parsed;
+  }
+}catch{}
+
+// DOM
+const tbody = $('#tbl tbody');
+const cards = $('#cards');
+const q = $('#q');
+const modeSel = $('#mode');
+const suggest = $('#suggest');
+const countEl = $('#count');
+
+function save(){ 
+  try{ localStorage.setItem('wordlist-data', JSON.stringify(DATA)); }catch{} 
+}
+
+function renderTable(rows){
+  tbody.innerHTML = rows.map(r => {
+    const query = q.value.trim();
+    return `<tr>
+      <td class="word">${highlight(r.word||'', query)}</td>
+      <td class="pos">${highlight(r.pos||'', query)}</td>
+      <td>${highlight(r.meaning||'', query)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderCards(rows){
+  const query = q.value.trim();
+  cards.innerHTML = rows.map(r => {
+    return `<div class="card">
+      <div class="card-word">${highlight(r.word||'', query)}</div>
+      <div class="card-pos">${highlight(r.pos||'', query)}</div>
+      <div class="card-meaning">${highlight(r.meaning||'', query)}</div>
+    </div>`;
+  }).join('');
+}
+
+function render(rows){
+  renderTable(rows);
+  renderCards(rows);
+  if(countEl) countEl.textContent = rows.length;
+}
+
+function filter(){
+  const query = q.value.trim();
+  if(!query){ render(DATA); makeSuggestions(''); return; }
+  const nq = norm(query);
+  const mode = modeSel.value;
+  const rows = DATA.filter(r => {
+    const hay = [r.word, r.pos, r.meaning].map(norm);
+    if(mode==='starts') return hay.some(x => x.startsWith(nq));
+    return hay.some(x => x.includes(nq));
+  });
+  render(rows);
+  makeSuggestions(query);
+}
+
+function makeSuggestions(query){
+  const nq = norm(query);
+  let words = Array.from(new Set(DATA.map(r=>r.word).filter(Boolean)));
+  if(!nq){ suggest.innerHTML=''; return; }
+  if(nq.length===1){
+    words = words.filter(w => norm(w).startsWith(nq)).slice(0,12);
+  }else{
+    words = words.filter(w => norm(w).includes(nq)).slice(0,12);
+  }
+  suggest.innerHTML = words.map(w=>`<button class="pill" data-w="${w}">${w}</button>`).join('');
+  $$('.pill').forEach(b=>b.addEventListener('click',()=>{ q.value=b.dataset.w; filter(); q.focus(); }))
+}
+
+const doFilter = debounce(filter, 120);
+q.addEventListener('input', doFilter);
+modeSel.addEventListener('change', filter);
+$('#clear').addEventListener('click', ()=>{ q.value=''; filter(); q.focus(); });
+
+// Initial render
+render(DATA);
+
+// Add
+$('#addBtn').addEventListener('click', ()=>{
+  const word = $('#word').value.trim();
+  const pos = $('#pos').value.trim();
+  const meaning = $('#meaning').value.trim();
+  if(!word || !meaning) return alert('Word and meaning are required.');
+  DATA.unshift({word, pos, meaning});
+  save();
+  $('#word').value = $('#pos').value = $('#meaning').value = '';
+  filter();
+  q.focus();
+});
+
+// Export
+$('#exportBtn').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(DATA, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'english-wordlist.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+// Import
+$('#file').addEventListener('change', async (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  const text = await f.text();
+  let rows = [];
+  try{ 
+    rows = JSON.parse(text); 
+    if(!Array.isArray(rows)) throw 0; 
+  }
+  catch{
+    // CSV/TSV: word,pos,meaning
+    const lines = text.split(/\r?\n/).filter(Boolean);
+    rows = lines.map(line => line.split(/[\t,]/)).map(c=>({
+      word:(c[0]||'').trim(),
+      pos:(c[1]||'').trim(),
+      meaning:(c[2]||'').trim()
+    }));
+  }
+  rows = rows.filter(r => r && r.word && r.meaning);
+  DATA = [...rows, ...DATA];
+  save();
+  filter();
+  e.target.value='';
+});
+</script>
+</body>
+</html>

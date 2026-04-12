@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Présentation - Normandie</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #66a6ff;
+        }
+
+        .slide-number {
+            font-size: 14px;
+            color: #66a6ff;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .slide-title {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .slide-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .slide-content {
+            line-height: 1.8;
+            font-size: 18px;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .slide-content p {
+            margin-bottom: 15px;
+        }
+
+        .slide-content ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .slide-content li {
+            margin-bottom: 8px;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-button {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #66a6ff;
+            color: white;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: #5090e6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 166, 255, 0.4);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .emergency-exit {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #e74c3c;
+            color: white;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .emergency-exit:hover {
+            background: #c0392b;
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #89f7fe 0%, #66a6ff 100%);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-content {
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="slide-header">
+            <div class="slide-icon" id="slideIcon">🎤</div>
+            <div class="slide-number" id="slideNumber">Slide 1 / 8</div>
+            <h1 class="slide-title" id="slideTitle">Introduction</h1>
+        </div>
+
+        <div class="slide-content" id="slideContent">
+            <p>Bonjour à tous,</p>
+            <p>aujourd'hui je vais vous parler de la Normandie. Peut-être que vous connaissez cette région à cause du Débarquement en 1944 (mil neuf cent quarante-quatre).</p>
+            <p>Mais la Normandie, ce n'est pas seulement la guerre. C'est aussi une région avec une nature magnifique, une histoire passionnante et des spécialités délicieuses.</p>
+            <p>Je vais vous présenter :</p>
+            <ul>
+                <li>la géographie</li>
+                <li>l'histoire</li>
+                <li>les lieux touristiques</li>
+                <li>et la culture.</li>
+            </ul>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevButton" onclick="previousSlide()">← Précédent</button>
+            <button class="nav-button" id="nextButton" onclick="nextSlide()">Suivant →</button>
+        </div>
+
+        <button class="emergency-exit" onclick="emergencyExit()">🚨 SORTIE D'URGENCE 🚨</button>
+    </div>
+
+    <script>
+        const slides = [
+            {
+                icon: '🎤',
+                title: 'Introduction',
+                content: `
+                    <p>Bonjour à tous,</p>
+                    <p>aujourd'hui je vais vous parler de la Normandie. Peut-être que vous connaissez cette région à cause du Débarquement en 1944 (mil neuf cent quarante-quatre).</p>
+                    <p>Mais la Normandie, ce n'est pas seulement la guerre. C'est aussi une région avec une nature magnifique, une histoire passionnante et des spécialités délicieuses.</p>
+                    <p>Je vais vous présenter :</p>
+                    <ul>
+                        <li>la géographie</li>
+                        <li>l'histoire</li>
+                        <li>les lieux touristiques</li>
+                        <li>et la culture.</li>
+                    </ul>
+                `
+            },
+            {
+                icon: '🗺️',
+                title: 'Où se trouve la Normandie ?',
+                content: `
+                    <p>La Normandie se trouve dans le nord-ouest de la France. Elle est située au bord de la mer, en face de l'Angleterre.</p>
+                    <p>La capitale est Rouen. D'autres villes importantes sont Caen et Le Havre.</p>
+                    <p>La région est connue pour :</p>
+                    <ul>
+                        <li>ses grandes plages</li>
+                        <li>ses falaises blanches</li>
+                        <li>ses paysages verts avec des vaches</li>
+                    </ul>
+                    <p>Quand on pense à la Normandie, on imagine la nature, le vent et la mer.</p>
+                `
+            },
+            {
+                icon: '📜',
+                title: 'Une région avec une grande histoire',
+                content: `
+                    <p>Le nom "Normandie" vient des Vikings. Au 9e siècle (neuvième siècle), ils sont arrivés du nord de l'Europe.</p>
+                    <p>En 1066 (mil soixante-six), un homme très important, Guillaume le Conquérant, a quitté la Normandie pour conquérir l'Angleterre.</p>
+                    <p>Mais l'événement le plus célèbre est le 6 juin 1944 (six juin mil neuf cent quarante-quatre).</p>
+                `
+            },
+            {
+                icon: '⚔️',
+                title: 'Le Débarquement',
+                content: `
+                    <p>Le 6 juin 1944 (six juin mil neuf cent quarante-quatre), pendant la Seconde Guerre mondiale, les soldats américains, britanniques et canadiens ont débarqué sur les plages de Normandie.</p>
+                    <p>Les plages les plus connues sont Omaha Beach et Utah Beach.</p>
+                    <p>C'était le début de la libération de la France. Beaucoup de soldats sont morts ce jour-là.</p>
+                    <p>Aujourd'hui, il y a des monuments et des cimetières pour ne jamais oublier cet événement.</p>
+                `
+            },
+            {
+                icon: '🏰',
+                title: 'Les lieux touristiques',
+                content: `
+                    <p>La Normandie a aussi des endroits magnifiques.</p>
+                    <p>Le plus célèbre est le Mont-Saint-Michel. C'est une petite île avec une grande abbaye. Quand la marée monte, l'île est entourée d'eau. C'est très impressionnant.</p>
+                    <p>Les falaises d'Étretat sont aussi très connues. Elles sont hautes et blanches.</p>
+                    <p>La ville de Rouen est célèbre pour sa cathédrale.</p>
+                `
+            },
+            {
+                icon: '🧀',
+                title: 'Culture et spécialités',
+                content: `
+                    <p>La Normandie est célèbre pour ses produits laitiers.</p>
+                    <p>On y produit :</p>
+                    <ul>
+                        <li>le camembert</li>
+                        <li>le beurre</li>
+                        <li>la crème</li>
+                    </ul>
+                    <p>La région est aussi connue pour ses pommes. On boit du cidre et du calvados.</p>
+                    <p>Les vaches font partie du paysage typique.</p>
+                `
+            },
+            {
+                icon: '✅',
+                title: 'Conclusion',
+                content: `
+                    <p>Pour conclure, la Normandie est une région très spéciale.</p>
+                    <p>Elle est importante pour l'histoire de l'Europe, mais elle est aussi belle et agréable.</p>
+                    <p>Personnellement, je trouve que c'est une région intéressante parce qu'elle combine l'histoire, la nature et la culture.</p>
+                    <p>Merci pour votre attention.</p>
+                `
+            }
+        ];
+
+        let currentSlide = 0;
+
+        function updateSlide() {
+            const slide = slides[currentSlide];
+            
+            document.getElementById('slideIcon').textContent = slide.icon;
+            document.getElementById('slideNumber').textContent = `Slide ${currentSlide + 1} / ${slides.length}`;
+            document.getElementById('slideTitle').textContent = slide.title;
+            document.getElementById('slideContent').innerHTML = slide.content;
+            
+            document.getElementById('prevButton').disabled = currentSlide === 0;
+            document.getElementById('nextButton').disabled = currentSlide === slides.length - 1;
+            
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function emergencyExit() {
+            window.location.href = 'https://www.google.com';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (event.key === 'Escape') {
+                emergencyExit();
+            }
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>
